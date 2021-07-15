@@ -20,7 +20,7 @@ int main()
             if(i==2 || i==5)
                 if(j==2 || j==5)
                     button->setText(s);
-            hl->add(button,"MainButton"+std::to_string(i)+std::to_string(j));
+            hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
         }
         for(int j=0;j<=8;j++)
             hl->insertSpace(j*2,0.2);
@@ -30,7 +30,9 @@ int main()
         vl->insertSpace(i*2,0.2);
     vl->setSize("50%","100%");
     vl->setPosition("25%","0%");
-    gui.add(vl,"VL");
+    tgui::Panel::Ptr panel = tgui::Panel::create();
+    panel->add(vl,"VL");
+    gui.add(panel,"panel");
 
 
     gui.mainLoop();
