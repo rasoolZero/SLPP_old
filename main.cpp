@@ -1,19 +1,18 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
+#include <CButton.h>
 
-using namespace sf;
-using namespace tgui;
 int main()
 {
     tgui::Theme::setDefault("theme.txt");
     tgui::String const s = U"\u2022";
-    RenderWindow window(VideoMode::getDesktopMode(), "SLPP", Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SLPP", sf::Style::Fullscreen);
     tgui::Gui gui(window);
     tgui::VerticalLayout::Ptr vl = tgui::VerticalLayout::create();
     for(int i=0;i<8;i++){
        tgui::HorizontalLayout::Ptr hl = tgui::HorizontalLayout::create();
         for(int j=0;j<8;j++){
-            tgui::Button::Ptr button = tgui::Button::create();
+            CButton::Ptr button = CButton::create();
             if(i==1 || i==6)
                 if(j==1 || j==6)
                     button->setText(s);
