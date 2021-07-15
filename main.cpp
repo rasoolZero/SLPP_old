@@ -5,6 +5,7 @@ using namespace sf;
 using namespace tgui;
 int main()
 {
+    tgui::Theme::setDefault("theme.txt");
     tgui::String const s = U"\u2022";
     RenderWindow window(VideoMode::getDesktopMode(), "SLPP", Style::Fullscreen);
     tgui::Gui gui(window);
@@ -30,8 +31,6 @@ int main()
     vl->setSize("50%","100%");
     vl->setPosition("25%","0%");
     gui.add(vl,"VL");
-
-
 
 
     gui.mainLoop();
