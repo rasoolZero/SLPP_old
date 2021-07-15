@@ -1,0 +1,10 @@
+*.dll
+bin
+obj
+SLPP.*
+/debug
+*.json
+*.exe
+form.txt
+/resources
+/themes
