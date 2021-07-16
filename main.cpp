@@ -19,6 +19,7 @@ int main()
             if(i==2 || i==5)
                 if(j==2 || j==5)
                     button->setText(s);
+            button->onClick(&CButton::openFile,button);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
         }
         for(int j=0;j<=8;j++)
