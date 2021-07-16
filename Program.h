@@ -15,6 +15,9 @@ class Program
 
     private:
         tgui::Gui & gui;
+        void setupLayout();
+        void setupButtons();
+        void setupPageButtons();
 };
 
 #endif // PROGRAM_H

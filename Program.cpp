@@ -3,10 +3,35 @@
 Program::Program(tgui::Gui & _gui) : gui(_gui)
 {
     tgui::Theme::setDefault("theme.txt");
-    tgui::String const s = U"\u2022";
+    setupLayout();
+    setupButtons();
+    setupPageButtons();
+}
+
+void Program::run(){
+    gui.mainLoop();
+}
+
+void Program::setupLayout(){
     tgui::VerticalLayout::Ptr vl = tgui::VerticalLayout::create();
+    for(int i=0;i<=8;i++){
+        tgui::HorizontalLayout::Ptr hl = tgui::HorizontalLayout::create();
+        vl->add(hl,"HL"+std::to_string(i));
+    }
+    for(int i=1;i<=9;i++)
+        vl->insertSpace(i*2,0.2);
+    vl->insertSpace(1,0.4);
+    vl->insertSpace(0,0.2);
+    vl->setSize("50%","100%");
+    vl->setPosition("25%","0%");
+    tgui::Panel::Ptr panel = tgui::Panel::create();
+    panel->add(vl,"VL");
+    gui.add(panel,"panel");
+}
+void Program::setupButtons(){
+    tgui::String const s = U"\u2022";
     for(int i=0;i<8;i++){
-       tgui::HorizontalLayout::Ptr hl = tgui::HorizontalLayout::create();
+        tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
         for(int j=0;j<8;j++){
             CButton::Ptr button = CButton::create();
             if(i==1 || i==6)
@@ -17,20 +42,30 @@ Program::Program(tgui::Gui & _gui) : gui(_gui)
                     button->setText(s);
             button->onClick(&CButton::openFile,button);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
-        }
-        for(int j=0;j<=8;j++)
             hl->insertSpace(j*2,0.2);
-        vl->add(hl,"HL"+std::to_string(i));
+        }
     }
-    for(int i=0;i<=8;i++)
-        vl->insertSpace(i*2,0.2);
-    vl->setSize("50%","100%");
-    vl->setPosition("25%","0%");
-    tgui::Panel::Ptr panel = tgui::Panel::create();
-    panel->add(vl,"VL");
-    gui.add(panel,"panel");
-}
 
-void Program::run(){
-    gui.mainLoop();
+}
+void Program::setupPageButtons(){
+    tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL0");
+    for(int i=0;i<8;i++){
+        CButton::Ptr button = CButton::create();
+        button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+        hl->add(button,"PageButton"+std::to_string(i));
+        hl->insertSpace(i*2,0.2);
+    }
+    CButton::Ptr button = CButton::create();
+    button->setVisible(false);
+    hl->add(button);
+    hl->insertSpace(16,0.4);
+
+    for(int i=0;i<8;i++){
+        hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
+        CButton::Ptr button = CButton::create();
+        button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+        hl->add(button,"PageButton"+std::to_string(i+8));
+        hl->insertSpace(16,0.4);
+    }
+
 }
