@@ -84,10 +84,10 @@ void Program::setPageNumber(int pn){
     gui.get<tgui::Button>("PageButton"+std::to_string(pageNumber))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
     pageNumber=pn;
     gui.get<tgui::Button>("PageButton"+std::to_string(pn))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButtonSelected"));
-    gui.updateTime();
+    container.setPageNumber(pageNumber);
 }
 
 void Program::trigger(int row,int col,bool down){
     gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
-    gui.updateTime();
+    container.trigger(row,col,down);
 }

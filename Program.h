@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
 #include <CButton.h>
+#include <AudioContainer.h>
 
 
 class Program
@@ -18,6 +19,7 @@ class Program
     protected:
 
     private:
+        AudioContainer container;
         tgui::Gui & gui;
         void setupLayout();
         void setupButtons();
