@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
 #include <CButton.h>
+#include <MIDI.h>
 
 int main()
 {
@@ -33,7 +34,7 @@ int main()
     tgui::Panel::Ptr panel = tgui::Panel::create();
     panel->add(vl,"VL");
     gui.add(panel,"panel");
-
+    MIDI midi;
 
     gui.mainLoop();
     return 0;
