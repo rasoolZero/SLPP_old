@@ -1,5 +1,4 @@
 #include <TGUI/TGUI.hpp>
-#include <SFML/Audio.hpp>
 #include <vector>
 
 
@@ -43,8 +42,6 @@ protected:
 
 
 private:
-    sf::SoundBuffer buffer;
-    bool AudioLoaded;
 };
 
 #endif // CBUTTON_H
