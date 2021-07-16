@@ -10,6 +10,8 @@ class Program
     public:
         Program(tgui::Gui & _gui);
         void run();
+        void setPageNumber(int pn);
+
 
     protected:
 
@@ -18,6 +20,7 @@ class Program
         void setupLayout();
         void setupButtons();
         void setupPageButtons();
+        int pageNumber=0;
 };
 
 #endif // PROGRAM_H

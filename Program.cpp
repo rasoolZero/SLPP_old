@@ -6,6 +6,7 @@ Program::Program(tgui::Gui & _gui) : gui(_gui)
     setupLayout();
     setupButtons();
     setupPageButtons();
+    setPageNumber(0);
 }
 
 void Program::run(){
@@ -68,4 +69,16 @@ void Program::setupPageButtons(){
         hl->insertSpace(16,0.4);
     }
 
+}
+
+
+void Program::setPageNumber(int pn){
+    if(pn<0)
+        pn=0;
+    if(pn>15)
+        pn=15;
+
+    gui.get<tgui::Button>("PageButton"+std::to_string(pageNumber))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+    pageNumber=pn;
+    gui.get<tgui::Button>("PageButton"+std::to_string(pn))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButtonSelected"));
 }
