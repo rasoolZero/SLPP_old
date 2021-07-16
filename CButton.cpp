@@ -16,10 +16,7 @@ void CButton::openFile(){
 void CButton::fileSelect(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths.size()>=1){
         sf::String sfStr(paths[0].asString());
-//        if(buffer.loadFromFile(sfStr)){
-//            AudioLoaded = true;
-//
-//        }
+        containerPtr->load(row,col,sfStr);
     }
     tgui::Container * panel;
     panel = this->getParent();

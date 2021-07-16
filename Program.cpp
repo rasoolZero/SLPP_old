@@ -44,6 +44,8 @@ void Program::setupButtons(){
             if(i==2 || i==5)
                 if(j==2 || j==5)
                     button->setText(s);
+            button->setRowCol(i,j);
+            button->setContainer(&container);
             button->onClick(&CButton::openFile,button);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
             hl->insertSpace(j*2,0.2);

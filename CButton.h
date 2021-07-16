@@ -1,5 +1,6 @@
 #include <TGUI/TGUI.hpp>
 #include <vector>
+#include <AudioContainer.h>
 
 
 #ifndef CBUTTON_H
@@ -9,6 +10,9 @@
 class CButton : public tgui::Button
 {
     public:
+    void setRowCol(int _row,int _col){row=_row;col=_col;}
+    void setContainer(AudioContainer * _container){containerPtr = _container;}
+
 
     typedef std::shared_ptr<CButton> Ptr;
     typedef std::shared_ptr<const CButton> ConstPtr;
@@ -42,6 +46,9 @@ protected:
 
 
 private:
+    int row;
+    int col;
+    AudioContainer * containerPtr;
 };
 
 #endif // CBUTTON_H
