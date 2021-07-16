@@ -34,8 +34,15 @@ int main()
     tgui::Panel::Ptr panel = tgui::Panel::create();
     panel->add(vl,"VL");
     gui.add(panel,"panel");
-    MIDI midi;
 
+    std::unique_ptr<MIDI> midi;
+    try{
+        midi = std::make_unique<MIDI>();
+    }
+    catch(std::runtime_error & e){
+        std::cout << e.what();
+        return 1;
+    }
     gui.mainLoop();
     return 0;
 }
