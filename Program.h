@@ -10,7 +10,9 @@ class Program
     public:
         Program(tgui::Gui & _gui);
         void run();
+        void update();
         void setPageNumber(int pn);
+        void trigger(int row,int col,bool down);
 
 
     protected:

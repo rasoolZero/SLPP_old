@@ -12,13 +12,25 @@ int main()
 
     std::unique_ptr<MIDI> midi;
     try{
-        midi = std::make_unique<MIDI>();
+        midi = std::make_unique<MIDI>(p);
     }
     catch(std::runtime_error & e){
         std::cout << e.what();
         return 1;
     }
 
-    p.run();
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            gui.handleEvent(event);
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+//        window.clear(clr);
+        p.update();
+        window.display();
+    }
     return 0;
 }
