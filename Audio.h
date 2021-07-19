@@ -1,19 +1,25 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 #include <SFML/Audio.hpp>
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 class Audio
 {
     public:
-        Audio();
+        Audio(int _channelNumber);
+        ~Audio();
+        int getChannelNumber(){return channelNumber;}
         void load(std::string & address);
         void trigger(bool down);
 
     protected:
 
     private:
-        sf::Sound sound;
-        sf::SoundBuffer buffer;
+        int channelNumber;
+        Mix_Chunk *sample=0;
+        bool looping=false;
         bool loaded=false;
 };
 

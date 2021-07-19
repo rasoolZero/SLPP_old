@@ -90,6 +90,6 @@ void Program::setPageNumber(int pn){
 }
 
 void Program::trigger(int row,int col,bool down){
-    gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
     container.trigger(row,col,down);
+    gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
 }
