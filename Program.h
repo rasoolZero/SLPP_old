@@ -4,6 +4,7 @@
 #include <TGUI/TGUI.hpp>
 #include <CButton.h>
 #include <AudioContainer.h>
+#include <ProjectManager.h>
 #define MENU_HEIGHT 22.f
 
 
@@ -22,6 +23,7 @@ class Program
     private:
         AudioContainer container;
         tgui::Gui & gui;
+        ProjectManager manager;
         void setupLayout();
         void setupButtons();
         void setupPageButtons();
