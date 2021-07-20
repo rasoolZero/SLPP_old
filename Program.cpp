@@ -58,6 +58,7 @@ void Program::setupPageButtons(){
     for(int i=0;i<8;i++){
         CButton::Ptr button = CButton::create();
         button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+        button->onClick(&Program::setPageNumber,this,i);
         hl->add(button,"PageButton"+std::to_string(i));
         hl->insertSpace(i*2,0.2);
     }
@@ -70,6 +71,7 @@ void Program::setupPageButtons(){
         hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
         CButton::Ptr button = CButton::create();
         button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+        button->onClick(&Program::setPageNumber,this,i+8);
         hl->add(button,"PageButton"+std::to_string(i+8));
         hl->insertSpace(16,0.4);
     }
