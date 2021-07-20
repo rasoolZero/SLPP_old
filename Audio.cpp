@@ -5,13 +5,11 @@ Audio::Audio(int _channelNumber)
     channelNumber=_channelNumber;
 }
 Audio::~Audio(){
-    if(loaded)
-        Mix_FreeChunk(sample);
+    clearSample();
 }
 
 void Audio::load(std::string & address){
-    if(loaded)
-        Mix_FreeChunk(sample);
+    clearSample();
 
     sample=Mix_LoadWAV(address.c_str());
     if(sample!=nullptr) {
@@ -29,4 +27,11 @@ void Audio::trigger(bool down){
         else
             Mix_PlayChannel(channelNumber, sample, looping?-1:0 );
     }
+}
+
+void Audio::clearSample(){
+    if(loaded)
+        Mix_FreeChunk(sample);
+    loaded=false;
+    looping=false;
 }

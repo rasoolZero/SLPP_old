@@ -50,7 +50,7 @@ void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
         return ;
     projectPath = paths[0];
-    //loadData();
+    loadData();
 }
 
 void ProjectManager::saveData(){
@@ -72,3 +72,30 @@ void ProjectManager::saveData(){
         }
     fclose(file);
 }
+
+void ProjectManager::loadData(){
+    FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"rb");
+    Audio * sound;
+    Mix_Chunk * sample;
+    for(int i=0;i<16;i++)
+        for(int j=0;j<64;j++){
+            sound = container->getSound(i,j);
+            sound->clearSample();
+            bool loaded;
+            fread(&loaded,sizeof(bool),1,file);
+            if(loaded){
+                bool looped;
+                sample = new Mix_Chunk;
+                sample->volume = 128;
+                sample->allocated = 1;
+                fread(&looped,sizeof(bool),1,file);
+                fread(&(sample->alen),sizeof(sample->alen),1,file);
+                sample->abuf = new Uint8[sample->alen];
+                fread(sample->abuf,sizeof(Uint8),sample->alen,file);
+                sound->setLooping(looped);
+                sound->setSample(sample);
+            }
+        }
+    fclose(file);
+}
+

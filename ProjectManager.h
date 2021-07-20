@@ -24,6 +24,7 @@ class ProjectManager
         void saveAsP(const std::vector<tgui::Filesystem::Path>& paths);
         void openP(const std::vector<tgui::Filesystem::Path>& paths);
         void saveData();
+        void loadData();
 };
 
 #endif // PROJECTMANAGER_H
