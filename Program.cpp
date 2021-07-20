@@ -108,13 +108,28 @@ void Program::setupMenuBar(sf::RenderWindow * window){
     tgui::MenuBar::Ptr menu = tgui::MenuBar::create();
     menu->setHeight(MENU_HEIGHT);
     menu->addMenu("File");
-    menu->addMenuItem("Open");
-    menu->addMenuItem("Save As");
-    menu->addMenuItem("Save");
-    menu->addMenuItem("Exit");
-    menu->connectMenuItem({"File","Exit"},&sf::RenderWindow::close,window);
-    menu->connectMenuItem({"File","Save As"},ProjectManager::saveAs,&manager);
-    menu->connectMenuItem({"File","Save"},ProjectManager::save,&manager);
-    menu->connectMenuItem({"File","Open"},ProjectManager::open,&manager);
+    menu->addMenuItem("Open (Ctrl+O)");
+    menu->addMenuItem("Save As (Ctrl+Shift+S)");
+    menu->addMenuItem("Save (Ctrl+S)");
+    menu->addMenuItem("Exit (Esc)");
+    menu->connectMenuItem({"File","Open (Ctrl+O)"},ProjectManager::open,&manager);
+    menu->connectMenuItem({"File","Save As (Ctrl+Shift+S)"},ProjectManager::saveAs,&manager);
+    menu->connectMenuItem({"File","Save (Ctrl+S)"},ProjectManager::save,&manager);
+    menu->connectMenuItem({"File","Exit (Esc)"},&sf::RenderWindow::close,window);
     gui.add(menu);
+}
+
+void Program::handleEvent(sf::Event event){
+    if (event.type == sf::Event::KeyPressed){
+        if(event.key.control){
+            if(event.key.code == sf::Keyboard::O)
+                manager.open();
+            if(event.key.code == sf::Keyboard::S){
+                if(event.key.shift)
+                    manager.saveAs();
+                else
+                    manager.save();
+            }
+        }
+    }
 }

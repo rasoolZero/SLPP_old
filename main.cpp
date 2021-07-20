@@ -25,6 +25,7 @@ int main()
         while (window.pollEvent(event))
         {
             gui.handleEvent(event);
+            p.handleEvent(event);
             if (event.type == sf::Event::Closed)
                 window.close();
             if (event.type == sf::Event::KeyPressed)

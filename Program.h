@@ -16,6 +16,7 @@ class Program
         void update();
         void setPageNumber(int pn);
         void trigger(int row,int col,bool down);
+        void handleEvent(sf::Event event);
 
 
     protected:
