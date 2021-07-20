@@ -1,7 +1,7 @@
 #include "CButton.h"
 void CButton::openFile(){
-    tgui::FileDialog::Ptr fileDialog = tgui::FileDialog::create("Open Audio File (.wav,.flac,.ogg)");
-    fileDialog->setFileTypeFilters({{"Audio Files (wav,ogg,flac)", {"*.wav", "*.ogg","*.flac"}}});
+    tgui::FileDialog::Ptr fileDialog = tgui::FileDialog::create("Open Audio File (.wav .flac .ogg .mp3)");
+    fileDialog->setFileTypeFilters({{"Audio Files (wav,ogg,flac,mp3)", {"*.wav", "*.ogg","*.flac","*.mp3"}}});
     fileDialog->setFileMustExist(true);
     fileDialog->onFileSelect(&CButton::fileSelect,this);
     tgui::Container * panel;
