@@ -63,7 +63,10 @@ void Program::setupPageButtons(){
         hl->insertSpace(i*2,0.2);
     }
     CButton::Ptr button = CButton::create();
-    button->setVisible(false);
+//    button->setVisible(false);
+    button->setText("Stop All\nPlaying\nSounds");
+    button->setTextSize(0);
+    button->onClick(&AudioContainer::stopAll,&container);
     hl->add(button);
     hl->insertSpace(16,0.4);
 

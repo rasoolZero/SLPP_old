@@ -13,6 +13,7 @@ class AudioContainer
         ~AudioContainer();
         void setPageNumber(int pn){pageNumber=pn;}
         void trigger(int row,int col,bool down);
+        void stopAll();
         void load(int row,int col,std::string address);
     protected:
 
