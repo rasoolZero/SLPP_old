@@ -8,7 +8,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SLPP", sf::Style::Fullscreen);
     tgui::Gui gui(window);
 
-    Program p(gui);
+    Program p(gui,& window);
 
     std::unique_ptr<MIDI> midi;
     try{

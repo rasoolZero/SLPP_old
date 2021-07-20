@@ -4,12 +4,13 @@
 #include <TGUI/TGUI.hpp>
 #include <CButton.h>
 #include <AudioContainer.h>
+#define MENU_HEIGHT 22.f
 
 
 class Program
 {
     public:
-        Program(tgui::Gui & _gui);
+        Program(tgui::Gui & _gui,sf::RenderWindow * window);
         void run();
         void update();
         void setPageNumber(int pn);
@@ -24,6 +25,7 @@ class Program
         void setupLayout();
         void setupButtons();
         void setupPageButtons();
+        void setupMenuBar(sf::RenderWindow * window);
         int pageNumber=0;
 };
 

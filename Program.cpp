@@ -1,11 +1,12 @@
 #include "Program.h"
 
-Program::Program(tgui::Gui & _gui) : gui(_gui)
+Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
 {
     tgui::Theme::setDefault("theme.txt");
     setupLayout();
     setupButtons();
     setupPageButtons();
+    setupMenuBar(window);
     setPageNumber(0);
 }
 
@@ -30,6 +31,8 @@ void Program::setupLayout(){
     vl->setPosition("25%","0%");
     tgui::Panel::Ptr panel = tgui::Panel::create();
     panel->add(vl,"VL");
+    panel->setPosition(0,MENU_HEIGHT);
+    panel->setSize(gui.getTarget()->getSize().x,gui.getTarget()->getSize().y-MENU_HEIGHT);
     gui.add(panel,"panel");
 }
 void Program::setupButtons(){
@@ -97,4 +100,16 @@ void Program::setPageNumber(int pn){
 void Program::trigger(int row,int col,bool down){
     container.trigger(row,col,down);
     gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
+}
+
+void Program::setupMenuBar(sf::RenderWindow * window){
+    tgui::MenuBar::Ptr menu = tgui::MenuBar::create();
+    menu->setHeight(MENU_HEIGHT);
+    menu->addMenu("File");
+    menu->addMenuItem("Load");
+    menu->addMenuItem("Save As");
+    menu->addMenuItem("Save");
+    menu->addMenuItem("Exit");
+    menu->connectMenuItem({"File","Exit"},&sf::RenderWindow::close,window);
+    gui.add(menu);
 }
