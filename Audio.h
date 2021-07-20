@@ -13,6 +13,9 @@ class Audio
         int getChannelNumber(){return channelNumber;}
         void load(std::string & address);
         void trigger(bool down);
+        bool isLoaded(){return loaded;}
+        bool isLooped(){return looping;}
+        Mix_Chunk * getSample(){return sample;}
 
     protected:
 

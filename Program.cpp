@@ -3,6 +3,7 @@
 Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
 {
     manager.setGUI(&gui);
+    manager.setContainer(&container);
     tgui::Theme::setDefault("theme.txt");
     setupLayout();
     setupButtons();

@@ -49,3 +49,7 @@ void AudioContainer::load(int row,int col,std::string address){
 void AudioContainer::stopAll(){
     Mix_HaltChannel(-1);
 }
+
+Audio * AudioContainer::getSound(int pn,int index){
+    return sounds[pn].data()+index;
+}

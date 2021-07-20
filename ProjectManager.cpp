@@ -1,4 +1,5 @@
 #include "ProjectManager.h"
+#include <fstream>
 
 ProjectManager::ProjectManager()
 {
@@ -30,7 +31,7 @@ void ProjectManager::save(){
         saveAs();
     }
     else{
-        //saveData()
+        saveData();
     }
 }
 
@@ -40,7 +41,7 @@ void ProjectManager::saveAsP(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
         return ;
     projectPath = paths[0];
-    //saveData();
+    saveData();
 }
 
 void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
@@ -50,4 +51,24 @@ void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
         return ;
     projectPath = paths[0];
     //loadData();
+}
+
+void ProjectManager::saveData(){
+    FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"wb");
+    Audio * sound;
+    Mix_Chunk * sample;
+    for(int i=0;i<16;i++)
+        for(int j=0;j<64;j++){
+            sound = container->getSound(i,j);
+            bool loaded = sound->isLoaded();
+            fwrite(&loaded,sizeof(bool),1,file);
+            if(loaded){
+                bool looped = sound->isLooped();
+                sample = sound->getSample();
+                fwrite(&looped,sizeof(bool),1,file);
+                fwrite(&(sample->alen),sizeof(sample->alen),1,file);
+                fwrite(sample->abuf,sizeof(Uint8),sample->alen,file);
+            }
+        }
+    fclose(file);
 }

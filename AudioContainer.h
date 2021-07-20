@@ -15,6 +15,8 @@ class AudioContainer
         void trigger(int row,int col,bool down);
         void stopAll();
         void load(int row,int col,std::string address);
+        Audio * getSound(int pn,int index);
+
     protected:
 
     private:
