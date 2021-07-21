@@ -52,6 +52,7 @@ void Program::setupButtons(){
             button->setRowCol(i,j);
             button->setContainer(&container);
             button->onClick(&CButton::openFile,button);
+            button->onRightClick(&Program::createConfigWindow,this,i*8+j);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
             hl->insertSpace(j*2,0.2);
         }
@@ -88,6 +89,8 @@ void Program::setupPageButtons(){
 
 
 void Program::setPageNumber(int pn){
+    if(!gui.get("panel")->isEnabled())
+        return;
     if(pn<0)
         pn=0;
     if(pn>15)
@@ -132,4 +135,46 @@ void Program::handleEvent(sf::Event event){
             }
         }
     }
+}
+
+void Program::createConfigWindow(int index){
+    tgui::ChildWindow::Ptr childWindow = tgui::ChildWindow::create("Config");
+    tgui::HorizontalLayout::Ptr hl = tgui::HorizontalLayout::create();
+    hl->setSize("100%","30%");
+    hl->setPosition("0%","35%");
+    childWindow->add(hl,"configHL");
+    gui.get("panel")->setEnabled(false);
+    childWindow->onClose([&]{ this->gui.get("panel")->setEnabled(true);});
+    setupConfigLoopButton(childWindow,index);
+    setupConfigRemoveButton(childWindow,index);
+    for(int i=0;i<3;i++)
+        hl->insertSpace(i*2,0.3f);
+    gui.add(childWindow,"Config");
+}
+
+void Program::setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index){
+    tgui::Button::Ptr button = tgui::Button::create();
+    button->setText(container.getSound(pageNumber,index)->isLooped()?"looping":"not looping");
+    button->onClick(&Program::loopButtonClick,this,index);
+    window->get<tgui::HorizontalLayout>("configHL")->add(button,"LoopButton");
+}
+
+
+void Program::setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index){
+    tgui::Button::Ptr button = tgui::Button::create();
+    button->setText("Remove Sound");
+    button->getRenderer()->setTextColor(sf::Color::Red);
+    button->onClick(&Program::removeButtonClick,this,index);
+    window->get<tgui::HorizontalLayout>("configHL")->add(button,"RemoveButton");
+}
+
+void Program::removeButtonClick(int index){
+    container.getSound(pageNumber,index)->clearSample();
+}
+
+void Program::loopButtonClick(int index){
+    bool looping = container.getSound(pageNumber,index)->isLooped();
+    looping=!looping;
+    container.getSound(pageNumber,index)->setLooping(looping);
+    gui.get<tgui::Button>("LoopButton")->setText(looping?"looping":"not looping");
 }

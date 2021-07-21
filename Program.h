@@ -17,6 +17,7 @@ class Program
         void setPageNumber(int pn);
         void trigger(int row,int col,bool down);
         void handleEvent(sf::Event event);
+        void createConfigWindow(int index);
 
 
     protected:
@@ -29,6 +30,13 @@ class Program
         void setupButtons();
         void setupPageButtons();
         void setupMenuBar(sf::RenderWindow * window);
+
+        void setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index);
+        void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
+
+        void removeButtonClick(int index);
+        void loopButtonClick(int index);
+
         int pageNumber=0;
 };
 
