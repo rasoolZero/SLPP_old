@@ -15,6 +15,7 @@ class Audio
         void trigger(bool down);
         bool isLoaded(){return loaded;}
         bool isLooped(){return looping;}
+        void stopPlaying();
         void setLooping(bool _looping){looping=_looping;}
         Mix_Chunk * getSample(){return sample;}
         void setSample(Mix_Chunk * _sample){sample=_sample;loaded=true;}

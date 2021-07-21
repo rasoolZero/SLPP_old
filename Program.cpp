@@ -183,8 +183,10 @@ void Program::removeButtonClick(int index){
 }
 
 void Program::loopButtonClick(int index){
-    bool looping = container.getSound(pageNumber,index)->isLooped();
+    Audio * sound = container.getSound(pageNumber,index);
+    bool looping = sound->isLooped();
     looping=!looping;
-    container.getSound(pageNumber,index)->setLooping(looping);
+    sound->setLooping(looping);
+    sound->stopPlaying();
     gui.get<tgui::Button>("LoopButton")->setText(looping?"looping":"not looping");
 }

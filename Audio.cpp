@@ -35,3 +35,7 @@ void Audio::clearSample(){
     loaded=false;
     looping=false;
 }
+
+void Audio::stopPlaying(){
+    Mix_HaltChannel(channelNumber);
+}
