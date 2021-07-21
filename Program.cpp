@@ -39,6 +39,9 @@ void Program::setupLayout(){
 }
 void Program::setupButtons(){
     tgui::String const s = U"\u2022";
+    auto tooltip = tgui::Label::create();
+    tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
+    tooltip->setText("Click to load sound\nRight Click to open Config Window");
     for(int i=0;i<8;i++){
         tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
         for(int j=0;j<8;j++){
@@ -53,6 +56,7 @@ void Program::setupButtons(){
             button->setContainer(&container);
             button->onClick(&CButton::openFile,button);
             button->onRightClick(&Program::createConfigWindow,this,i*8+j);
+            button->setToolTip(tooltip);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
             hl->insertSpace(j*2,0.2);
         }
@@ -60,10 +64,15 @@ void Program::setupButtons(){
 
 }
 void Program::setupPageButtons(){
+    auto tooltip = tgui::Label::create();
+    tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
+    tooltip->setText("Click to change page");
+
     tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL0");
     for(int i=0;i<8;i++){
         CButton::Ptr button = CButton::create();
         button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+        button->setToolTip(tooltip);
         button->onClick(&Program::setPageNumber,this,i);
         hl->add(button,"PageButton"+std::to_string(i));
         hl->insertSpace(i*2,0.2);
@@ -80,6 +89,7 @@ void Program::setupPageButtons(){
         hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
         CButton::Ptr button = CButton::create();
         button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
+        button->setToolTip(tooltip);
         button->onClick(&Program::setPageNumber,this,i+8);
         hl->add(button,"PageButton"+std::to_string(i+8));
         hl->insertSpace(16,0.4);
