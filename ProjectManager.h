@@ -4,12 +4,12 @@
 #include <vector>
 #include <AudioContainer.h>
 
+class Program;
+
 class ProjectManager
 {
     public:
-        ProjectManager();
-        void setGUI(tgui::Gui * _gui){gui=_gui;}
-        void setContainer(AudioContainer * _container){container=_container;}
+        ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container);
         void saveAs();
         void save();
         void open();
@@ -18,9 +18,11 @@ class ProjectManager
     protected:
 
     private:
-        tgui::Gui * gui;
-        AudioContainer * container;
+        Program & program;
+        tgui::Gui & gui;
+        AudioContainer & container;
         tgui::Filesystem::Path projectPath;
+        tgui::Filesystem::Path oldPath;
 
         void saveAsP(const std::vector<tgui::Filesystem::Path>& paths);
         void openP(const std::vector<tgui::Filesystem::Path>& paths);

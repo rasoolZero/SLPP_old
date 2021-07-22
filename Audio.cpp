@@ -15,6 +15,9 @@ void Audio::load(std::string & address){
     if(sample!=nullptr) {
         loaded=true;
     }
+    else{
+        throw std::runtime_error(Mix_GetError());
+    }
 }
 
 void Audio::trigger(bool down){
@@ -30,8 +33,10 @@ void Audio::trigger(bool down){
 }
 
 void Audio::clearSample(){
-    if(loaded)
+    if(loaded){
         Mix_FreeChunk(sample);
+        sample=nullptr;
+    }
     loaded=false;
     looping=false;
 }

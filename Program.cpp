@@ -10,10 +10,10 @@ Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
     try{
         container = std::make_unique<AudioContainer>();
         midi = std::make_unique<MIDI>(*this);
+        manager = std::make_unique<ProjectManager>(*this,gui,*(container.get()));
         pollingEvents=true;
         setPageNumber(0);
-        manager.setGUI(&gui);
-        manager.setContainer(container.get());
+
     }
     catch(std::runtime_error & e){
         tgui::MessageBox::Ptr box = tgui::MessageBox::create();
@@ -143,10 +143,10 @@ void Program::setupMenuBar(sf::RenderWindow * window){
     menu->addMenuItem("Save As (Ctrl+Shift+S)");
     menu->addMenuItem("Save (Ctrl+S)");
     menu->addMenuItem("Exit (Esc)");
-    menu->connectMenuItem({"File","New (Ctrl+N)"},ProjectManager::newP,&manager);
-    menu->connectMenuItem({"File","Open (Ctrl+O)"},ProjectManager::open,&manager);
-    menu->connectMenuItem({"File","Save As (Ctrl+Shift+S)"},ProjectManager::saveAs,&manager);
-    menu->connectMenuItem({"File","Save (Ctrl+S)"},ProjectManager::save,&manager);
+    menu->connectMenuItem({"File","New (Ctrl+N)"},&Program::operate,this,Operations::newP);
+    menu->connectMenuItem({"File","Open (Ctrl+O)"},&Program::operate,this,Operations::open);
+    menu->connectMenuItem({"File","Save As (Ctrl+Shift+S)"},&Program::operate,this,Operations::saveAs);
+    menu->connectMenuItem({"File","Save (Ctrl+S)"},&Program::operate,this,Operations::save);
     menu->connectMenuItem({"File","Exit (Esc)"},&sf::RenderWindow::close,window);
     gui.add(menu);
 }
@@ -157,14 +157,14 @@ void Program::handleEvent(sf::Event event){
     if (event.type == sf::Event::KeyPressed){
         if(event.key.control){
             if(event.key.code == sf::Keyboard::O)
-                manager.open();
+                operate(Operations::open);
             if(event.key.code == sf::Keyboard::N)
-                manager.newP();
+                operate(Operations::newP);
             if(event.key.code == sf::Keyboard::S){
                 if(event.key.shift)
-                    manager.saveAs();
+                operate(Operations::saveAs);
                 else
-                    manager.save();
+                operate(Operations::save);
             }
         }
     }
@@ -215,7 +215,12 @@ void Program::loopButtonClick(int index){
 }
 
 void Program::load(int row,int col,std::string address){
-    container.get()->load(row,col,address);
+    try{
+        container->load(row,col,address);
+    }
+    catch(std::runtime_error & e){
+        createErrorWindow(e.what());
+    }
 }
 
 void Program::createErrorWindow(const char * message){
@@ -234,4 +239,15 @@ void Program::errorClosed(){
     gui.remove(gui.get("TransparentBackground"));
     gui.remove(gui.get("ErrorBox"));
     pollingEvents=true;
+}
+
+void Program::operate(Operations operation){
+    if(operation==Operations::newP)
+        manager->newP();
+    if(operation==Operations::open)
+        manager->open();
+    if(operation==Operations::save)
+        manager->save();
+    if(operation==Operations::saveAs)
+        manager->saveAs();
 }

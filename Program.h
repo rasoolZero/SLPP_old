@@ -11,6 +11,7 @@
 
 class Program
 {
+    enum Operations{save,saveAs,open,newP};
     public:
         Program(tgui::Gui & _gui,sf::RenderWindow * window);
         void run();
@@ -20,6 +21,8 @@ class Program
         void handleEvent(sf::Event event);
         void createConfigWindow(int index);
         void load(int row,int col,std::string address);
+        void operate(Operations operation);
+        void createErrorWindow(const char * message);
 
 
     protected:
@@ -27,8 +30,8 @@ class Program
     private:
         std::unique_ptr<MIDI> midi;
         std::unique_ptr<AudioContainer> container;
+        std::unique_ptr<ProjectManager> manager;
         tgui::Gui & gui;
-        ProjectManager manager;
         void setupLayout();
         void setupButtons();
         void setupPageButtons();
@@ -42,8 +45,6 @@ class Program
 
         void removeButtonClick(int index);
         void loopButtonClick(int index);
-
-        void createErrorWindow(const char * message);
 
         bool pollingEvents=false;
 
