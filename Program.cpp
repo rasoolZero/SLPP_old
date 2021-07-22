@@ -148,6 +148,10 @@ void Program::setupMenuBar(sf::RenderWindow * window){
     menu->connectMenuItem({"File","Save As (Ctrl+Shift+S)"},&Program::operate,this,Operations::saveAs);
     menu->connectMenuItem({"File","Save (Ctrl+S)"},&Program::operate,this,Operations::save);
     menu->connectMenuItem({"File","Exit (Esc)"},&sf::RenderWindow::close,window);
+
+    menu->addMenu("View");
+    menu->addMenuItem("Show Buttons with loaded sound (F2)");
+    menu->connectMenuItem({"View","Show Buttons with loaded sound (F2)"},&Program::loadedSoundsWindow,this);
     gui.add(menu);
 }
 
@@ -162,11 +166,13 @@ void Program::handleEvent(sf::Event event){
                 operate(Operations::newP);
             if(event.key.code == sf::Keyboard::S){
                 if(event.key.shift)
-                operate(Operations::saveAs);
+                    operate(Operations::saveAs);
                 else
-                operate(Operations::save);
+                    operate(Operations::save);
             }
         }
+        if(event.key.code == sf::Keyboard::F2)
+            loadedSoundsWindow();
     }
 }
 
