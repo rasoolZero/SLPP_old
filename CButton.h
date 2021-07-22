@@ -1,29 +1,28 @@
 #include <TGUI/TGUI.hpp>
 #include <vector>
-#include <AudioContainer.h>
 
 
 #ifndef CBUTTON_H
 #define CBUTTON_H
 
+class Program;
 
 class CButton : public tgui::Button
 {
     public:
     void setRowCol(int _row,int _col){row=_row;col=_col;}
-    void setContainer(AudioContainer * _container){containerPtr = _container;}
 
 
     typedef std::shared_ptr<CButton> Ptr;
     typedef std::shared_ptr<const CButton> ConstPtr;
-    CButton(const char* typeName = "Button", bool initRenderer = true) :
-        tgui::Button(typeName, initRenderer)
+    CButton(Program & _program,const char* typeName = "Button", bool initRenderer = true) :
+        tgui::Button(typeName, initRenderer),program(_program)
     {
     }
 
-    static CButton::Ptr create()
+    static CButton::Ptr create(Program & _program)
     {
-        return std::make_shared<CButton>();
+        return std::make_shared<CButton>(_program);
     }
 
     static CButton::Ptr copy(CButton::ConstPtr widget)
@@ -48,7 +47,7 @@ protected:
 private:
     int row;
     int col;
-    AudioContainer * containerPtr;
+    Program & program;
 };
 
 #endif // CBUTTON_H

@@ -1,4 +1,5 @@
 #include "CButton.h"
+#include <Program.h>
 void CButton::openFile(){
     tgui::FileDialog::Ptr fileDialog = tgui::FileDialog::create("Open Audio File (.wav .flac .ogg .mp3)");
     fileDialog->setFileTypeFilters({{"Audio Files (wav,ogg,flac,mp3)", {"*.wav", "*.ogg","*.flac","*.mp3"}}});
@@ -16,7 +17,7 @@ void CButton::openFile(){
 void CButton::fileSelect(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths.size()>=1){
         sf::String sfStr(paths[0].asString());
-        containerPtr->load(row,col,sfStr);
+        program.load(row,col,sfStr);
     }
     tgui::Container * panel;
     panel = this->getParent();

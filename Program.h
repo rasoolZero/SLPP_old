@@ -19,6 +19,7 @@ class Program
         void trigger(int row,int col,bool down);
         void handleEvent(sf::Event event);
         void createConfigWindow(int index);
+        void load(int row,int col,std::string address);
 
 
     protected:

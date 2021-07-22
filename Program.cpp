@@ -63,7 +63,7 @@ void Program::setupButtons(){
     for(int i=0;i<8;i++){
         tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
         for(int j=0;j<8;j++){
-            CButton::Ptr button = CButton::create();
+            CButton::Ptr button = CButton::create(*this);
             if(i==1 || i==6)
                 if(j==1 || j==6)
                     button->setText(s);
@@ -71,7 +71,6 @@ void Program::setupButtons(){
                 if(j==2 || j==5)
                     button->setText(s);
             button->setRowCol(i,j);
-            button->setContainer(container.get());
             button->onClick(&CButton::openFile,button);
             button->onRightClick(&Program::createConfigWindow,this,i*8+j);
             button->setToolTip(tooltip);
@@ -88,14 +87,14 @@ void Program::setupPageButtons(){
 
     tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL0");
     for(int i=0;i<8;i++){
-        CButton::Ptr button = CButton::create();
+        tgui::Button::Ptr button = tgui::Button::create();
         button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
         button->setToolTip(tooltip);
         button->onClick(&Program::setPageNumber,this,i);
         hl->add(button,"PageButton"+std::to_string(i));
         hl->insertSpace(i*2,0.2);
     }
-    CButton::Ptr button = CButton::create();
+    tgui::Button::Ptr button = tgui::Button::create();
 //    button->setVisible(false);
     button->setText("Stop All\nPlaying\nSounds");
     button->setTextSize(0);
@@ -105,7 +104,7 @@ void Program::setupPageButtons(){
 
     for(int i=0;i<8;i++){
         hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
-        CButton::Ptr button = CButton::create();
+        tgui::Button::Ptr button = tgui::Button::create();
         button->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
         button->setToolTip(tooltip);
         button->onClick(&Program::setPageNumber,this,i+8);
@@ -213,4 +212,8 @@ void Program::loopButtonClick(int index){
     sound->setLooping(looping);
     sound->stopPlaying();
     gui.get<tgui::Button>("LoopButton")->setText(looping?"looping":"not looping");
+}
+
+void Program::load(int row,int col,std::string address){
+    container.get()->load(row,col,address);
 }
