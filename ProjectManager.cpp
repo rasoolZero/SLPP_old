@@ -62,7 +62,7 @@ void ProjectManager::saveData(){
     program.enable();
     FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"wb");
     if(!file){
-        program.createErrorWindow("Could not open the file");
+        program.createErrorBox("Could not open the file");
         return;
     }
     Audio * sound;
@@ -84,7 +84,7 @@ void ProjectManager::saveData(){
     }
     catch(std::exception & e){
         std::string message = std::string("Could not save the data,Error Details:\n")+std::string(e.what());
-        program.createErrorWindow(message.c_str());
+        program.createErrorBox(message.c_str());
     }
     fclose(file);
 }
@@ -93,7 +93,7 @@ void ProjectManager::loadData(){
     program.enable();
     FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"rb");
     if(!file){
-        program.createErrorWindow("Could not open the file");
+        program.createErrorBox("Could not open the file");
         return;
     }
     Audio * sound;
@@ -120,7 +120,7 @@ void ProjectManager::loadData(){
             }
     }
     catch(std::exception & e){
-        program.createErrorWindow("Project file is corrupted or is not compatible with this version");
+        program.createErrorBox("Project file is corrupted or is not compatible with this version");
         newP();
     }
     fclose(file);

@@ -5,14 +5,8 @@ void CButton::openFile(){
     fileDialog->setFileTypeFilters({{"Audio Files (wav,ogg,flac,mp3)", {"*.wav", "*.ogg","*.flac","*.mp3"}}});
     fileDialog->setFileMustExist(true);
     fileDialog->onFileSelect(&CButton::fileSelect,this);
-    tgui::Container * cont;
-    cont = this->getParent();
-    while(cont->getWidgetName()!="panel"){
-        cont = cont->getParent();
-    }
-
     program.disable();
-    cont->getParent()->add(fileDialog,"fileDialog");
+    this->getParentGui()->add(fileDialog,"fileDialog");
 }
 void CButton::fileSelect(const std::vector<tgui::Filesystem::Path>& paths){
     program.enable();

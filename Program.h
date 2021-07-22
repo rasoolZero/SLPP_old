@@ -22,7 +22,7 @@ class Program
         void createConfigWindow(int index);
         void load(int row,int col,std::string address);
         void operate(Operations operation);
-        void createErrorWindow(const char * message);
+        void createErrorBox(const char * message);
 
         void disable();
         void enable();

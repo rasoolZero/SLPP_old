@@ -219,11 +219,11 @@ void Program::load(int row,int col,std::string address){
         container->load(row,col,address);
     }
     catch(std::runtime_error & e){
-        createErrorWindow(e.what());
+        createErrorBox(e.what());
     }
 }
 
-void Program::createErrorWindow(const char * message){
+void Program::createErrorBox(const char * message){
     tgui::MessageBox::Ptr box = tgui::MessageBox::create();
     box->setText(message);
     box->addButton("Ok");
