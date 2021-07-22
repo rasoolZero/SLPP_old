@@ -1,21 +1,18 @@
 #include "AudioContainer.h"
 
+
 AudioContainer::AudioContainer()
 {
     if(SDL_Init(SDL_INIT_AUDIO)==-1) {
-        printf("SDL_Init: %s\n", SDL_GetError());
-        //stop the program
+        throw std::runtime_error(std::string("Error on SDL_Init\n")+std::string(SDL_GetError()));
     }
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 8192)==-1) {
-        printf("Mix_OpenAudio: %s\n", Mix_GetError());
-        //stop the program
+        throw std::runtime_error(std::string("Error on Mix_OpenAudio\n")+std::string(Mix_GetError()));
     }
     int flags=MIX_INIT_OGG|MIX_INIT_MOD|MIX_INIT_FLAC|MIX_INIT_MP3;
     int initted=Mix_Init(flags);
     if((initted&flags) != flags) {
-        printf("Mix_Init: Failed to init required OGG, mod, Flac and MP3 support!\n");
-        printf("Mix_Init: %s\n", Mix_GetError());
-        //stop the program
+        throw std::runtime_error(std::string("Error on Mix_init\n")+std::string(Mix_GetError()));
     }
     int channelNumber=0;
     Mix_AllocateChannels(1024);

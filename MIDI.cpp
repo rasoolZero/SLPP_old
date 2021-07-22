@@ -6,7 +6,7 @@ MIDI::MIDI(Program & _program) : program(_program)
     midiin = std::make_unique<RtMidiIn>();
     unsigned int nPorts = midiin->getPortCount();
     if(nPorts==0)
-        throw std::runtime_error("No MIDI Device Connected");
+        throw std::runtime_error("Error:\nNo MIDI Device found.\nMake sure your Launchpad is connected.");
     midiin->openPort( 0 );
     midiin->setCallback(&midiInput,this);
 

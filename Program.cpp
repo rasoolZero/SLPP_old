@@ -3,19 +3,21 @@
 Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
 {
     tgui::Theme::setDefault("theme.txt");
-    container = std::make_unique<AudioContainer>();
     setupLayout();
     setupButtons();
     setupPageButtons();
     setupMenuBar(window);
-    setPageNumber(0);
     try{
+        container = std::make_unique<AudioContainer>();
         midi = std::make_unique<MIDI>(*this);
         loaded=true;
+        setPageNumber(0);
+        manager.setGUI(&gui);
+        manager.setContainer(container.get());
     }
     catch(std::runtime_error & e){
         tgui::MessageBox::Ptr box = tgui::MessageBox::create();
-        box->setText("No MIDI Device found.\nMake sure your Launchpad is connected");
+        box->setText(e.what());
         box->addButton("Close");
         box->onButtonPress(&Program::windowClosed,this,window);
         auto panel = tgui::Panel::create({"100%", "100%"});
@@ -23,8 +25,6 @@ Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
         gui.add(panel, "TransparentBackground");
         gui.add(box,"ErrorBox");
     }
-    manager.setGUI(&gui);
-    manager.setContainer(container.get());
 }
 void Program::windowClosed(sf::RenderWindow * window){
     window->close();
