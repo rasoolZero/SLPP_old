@@ -300,7 +300,7 @@ void Program::loadedSoundsWindow(){
                     panel->add(lbl);
                 }
                 panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
-                panel->onClick([&]{std::cout << "h" << std::endl;});
+                panel->onClick(AudioContainer::triggerPN,container.get(),i,j,k,true);
                 hl->add(panel);
             }
             for(int k=0;k<=8;k++)
