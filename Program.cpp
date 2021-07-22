@@ -20,9 +20,7 @@ Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
         box->setText(e.what());
         box->addButton("Close");
         box->onButtonPress(&Program::windowClosed,this,window);
-        auto panel = tgui::Panel::create({"100%", "100%"});
-        panel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
-        gui.add(panel, "TransparentBackground");
+        disable();
         gui.add(box,"ErrorBox");
     }
 }
@@ -116,7 +114,7 @@ void Program::setupPageButtons(){
 
 
 void Program::setPageNumber(int pn){
-    if(!gui.get("panel")->isEnabled())
+    if(!pollingEvents)
         return;
     if(pn<0)
         pn=0;
@@ -176,12 +174,12 @@ void Program::createConfigWindow(int index){
     hl->setSize("100%","30%");
     hl->setPosition("0%","35%");
     childWindow->add(hl,"configHL");
-    gui.get("panel")->setEnabled(false);
-    childWindow->onClose([&]{ this->gui.get("panel")->setEnabled(true);});
+    childWindow->onClose([&]{ this->enable();});
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
     for(int i=0;i<3;i++)
         hl->insertSpace(i*2,0.3f);
+    disable();
     gui.add(childWindow,"Config");
 }
 
@@ -224,21 +222,17 @@ void Program::load(int row,int col,std::string address){
 }
 
 void Program::createErrorWindow(const char * message){
-    pollingEvents=false;
     tgui::MessageBox::Ptr box = tgui::MessageBox::create();
     box->setText(message);
     box->addButton("Ok");
     box->onButtonPress(&Program::errorClosed,this);
-    auto panel = tgui::Panel::create({"100%", "100%"});
-    panel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
-    gui.add(panel, "TransparentBackground");
+    disable();
     gui.add(box,"ErrorBox");
 }
 
 void Program::errorClosed(){
-    gui.remove(gui.get("TransparentBackground"));
     gui.remove(gui.get("ErrorBox"));
-    pollingEvents=true;
+    enable();
 }
 
 void Program::operate(Operations operation){
@@ -250,4 +244,15 @@ void Program::operate(Operations operation){
         manager->save();
     if(operation==Operations::saveAs)
         manager->saveAs();
+}
+
+void Program::disable(){
+    auto panel = tgui::Panel::create({"100%", "100%"});
+    panel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
+    gui.add(panel, "TransparentBackground");
+    pollingEvents=false;
+}
+void Program::enable(){
+    pollingEvents=true;
+    gui.remove(gui.get("TransparentBackground"));
 }

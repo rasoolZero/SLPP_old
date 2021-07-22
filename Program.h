@@ -24,6 +24,8 @@ class Program
         void operate(Operations operation);
         void createErrorWindow(const char * message);
 
+        void disable();
+        void enable();
 
     protected:
 

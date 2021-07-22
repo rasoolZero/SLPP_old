@@ -15,6 +15,7 @@ void ProjectManager::saveAs(){
     fileDialog->setFileMustExist(false);
     fileDialog->setMultiSelect(false);
     fileDialog->onFileSelect(&ProjectManager::saveAsP,this);
+    program.disable();
     gui.add(fileDialog,"saveAsFileDialog");
 }
 
@@ -24,6 +25,7 @@ void ProjectManager::open(){
     fileDialog->setFileMustExist(true);
     fileDialog->setMultiSelect(false);
     fileDialog->onFileSelect(&ProjectManager::openP,this);
+    program.disable();
     gui.add(fileDialog,"openFileDialog");
 }
 
@@ -37,6 +39,7 @@ void ProjectManager::save(){
 }
 
 void ProjectManager::saveAsP(const std::vector<tgui::Filesystem::Path>& paths){
+    program.enable();
     if(paths.size()==0)
         return ;
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
@@ -46,6 +49,7 @@ void ProjectManager::saveAsP(const std::vector<tgui::Filesystem::Path>& paths){
 }
 
 void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
+    program.enable();
     if(paths.size()==0)
         return ;
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
@@ -55,6 +59,7 @@ void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
 }
 
 void ProjectManager::saveData(){
+    program.enable();
     FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"wb");
     if(!file){
         program.createErrorWindow("Could not open the file");
@@ -85,6 +90,7 @@ void ProjectManager::saveData(){
 }
 
 void ProjectManager::loadData(){
+    program.enable();
     FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"rb");
     if(!file){
         program.createErrorWindow("Could not open the file");
