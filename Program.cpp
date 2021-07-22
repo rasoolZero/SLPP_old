@@ -121,10 +121,12 @@ void Program::setupMenuBar(sf::RenderWindow * window){
     tgui::MenuBar::Ptr menu = tgui::MenuBar::create();
     menu->setHeight(MENU_HEIGHT);
     menu->addMenu("File");
+    menu->addMenuItem("New (Ctrl+N)");
     menu->addMenuItem("Open (Ctrl+O)");
     menu->addMenuItem("Save As (Ctrl+Shift+S)");
     menu->addMenuItem("Save (Ctrl+S)");
     menu->addMenuItem("Exit (Esc)");
+    menu->connectMenuItem({"File","New (Ctrl+N)"},ProjectManager::newP,&manager);
     menu->connectMenuItem({"File","Open (Ctrl+O)"},ProjectManager::open,&manager);
     menu->connectMenuItem({"File","Save As (Ctrl+Shift+S)"},ProjectManager::saveAs,&manager);
     menu->connectMenuItem({"File","Save (Ctrl+S)"},ProjectManager::save,&manager);
@@ -137,6 +139,8 @@ void Program::handleEvent(sf::Event event){
         if(event.key.control){
             if(event.key.code == sf::Keyboard::O)
                 manager.open();
+            if(event.key.code == sf::Keyboard::N)
+                manager.newP();
             if(event.key.code == sf::Keyboard::S){
                 if(event.key.shift)
                     manager.saveAs();

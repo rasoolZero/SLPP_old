@@ -6,6 +6,7 @@ SLPP.*
 *.json
 *.exe
 form.txt
+todo.txt
 /resources
 /themes
 *.slpp

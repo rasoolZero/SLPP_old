@@ -13,6 +13,7 @@ class ProjectManager
         void saveAs();
         void save();
         void open();
+        void newP();
 
     protected:
 

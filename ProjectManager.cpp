@@ -99,3 +99,9 @@ void ProjectManager::loadData(){
     fclose(file);
 }
 
+void ProjectManager::newP(){
+    projectPath = tgui::Filesystem::Path();
+    for(int i=0;i<16;i++)
+        for(int j=0;j<64;j++)
+            container->getSound(i,j)->clearSample();
+}
