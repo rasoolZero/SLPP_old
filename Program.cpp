@@ -10,7 +10,7 @@ Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
     try{
         container = std::make_unique<AudioContainer>();
         midi = std::make_unique<MIDI>(*this);
-        loaded=true;
+        pollingEvents=true;
         setPageNumber(0);
         manager.setGUI(&gui);
         manager.setContainer(container.get());
@@ -152,7 +152,7 @@ void Program::setupMenuBar(sf::RenderWindow * window){
 }
 
 void Program::handleEvent(sf::Event event){
-    if(!loaded)
+    if(!pollingEvents)
         return ;
     if (event.type == sf::Event::KeyPressed){
         if(event.key.control){
@@ -216,4 +216,22 @@ void Program::loopButtonClick(int index){
 
 void Program::load(int row,int col,std::string address){
     container.get()->load(row,col,address);
+}
+
+void Program::createErrorWindow(const char * message){
+    pollingEvents=false;
+    tgui::MessageBox::Ptr box = tgui::MessageBox::create();
+    box->setText(message);
+    box->addButton("Ok");
+    box->onButtonPress(&Program::errorClosed,this);
+    auto panel = tgui::Panel::create({"100%", "100%"});
+    panel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
+    gui.add(panel, "TransparentBackground");
+    gui.add(box,"ErrorBox");
+}
+
+void Program::errorClosed(){
+    gui.remove(gui.get("TransparentBackground"));
+    gui.remove(gui.get("ErrorBox"));
+    pollingEvents=true;
 }

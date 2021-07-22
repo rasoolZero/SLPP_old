@@ -35,6 +35,7 @@ class Program
         void setupMenuBar(sf::RenderWindow * window);
 
         void windowClosed(sf::RenderWindow * window);
+        void errorClosed();
 
         void setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index);
         void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
@@ -42,7 +43,9 @@ class Program
         void removeButtonClick(int index);
         void loopButtonClick(int index);
 
-        bool loaded=false;
+        void createErrorWindow(const char * message);
+
+        bool pollingEvents=false;
 
         int pageNumber=0;
 };
