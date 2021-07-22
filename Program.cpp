@@ -258,3 +258,52 @@ void Program::enable(){
     pollingEvents=true;
     gui.remove(gui.get("TransparentBackground"));
 }
+
+void Program::loadedSoundsWindow(){
+    auto window = tgui::ChildWindow::create("");
+    window->setSize(gui.getTarget()->getSize().x,gui.getTarget()->getSize().y);
+    window->setPositionLocked();
+    auto mainPanel = tgui::ScrollablePanel::create();
+    mainPanel->setVerticalScrollbarPolicy(tgui::Scrollbar::Policy::Always);
+    mainPanel->setHorizontalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
+    window->add(mainPanel);
+
+    auto verticalLayout = tgui::VerticalLayout::create();
+    verticalLayout->setSize("100%","1600%");
+    mainPanel->add(verticalLayout);
+    for(int i=0;i<16;i++){
+        auto panel = tgui::Panel::create();
+        auto label = tgui::Label::create();
+        label->setText("Page "+std::to_string(i+1));
+        panel->add(label);
+
+
+        auto vl = tgui::VerticalLayout::create();
+        for(int j=0;j<8;j++){
+            auto hl = tgui::HorizontalLayout::create();
+
+            for(int k=0;k<8;k++){
+                auto panel = tgui::Panel::create();
+                bool loaded = container->getSound(i,j*8+k)->isLoaded();
+                panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
+                hl->add(panel);
+            }
+            for(int k=0;k<=8;k++)
+                hl->insertSpace(k*2,k==4?0.4:0.2);
+
+            vl->add(hl);
+        }
+        for(int j=0;j<=8;j++)
+            vl->insertSpace(j*2,j==4?0.4:0.2);
+        vl->setSize("50%","100%");
+        vl->setPosition("25%","0%");
+
+
+        panel->add(vl);
+        verticalLayout->add(panel);
+    }
+    mainPanel->setVerticalScrollAmount(mainPanel->getContentSize().y/16);
+    window->onClose([&]{ this->enable();});
+    disable();
+    gui.add(window);
+}
