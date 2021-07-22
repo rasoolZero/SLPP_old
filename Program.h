@@ -25,7 +25,7 @@ class Program
 
     private:
         std::unique_ptr<MIDI> midi;
-        AudioContainer container;
+        std::unique_ptr<AudioContainer> container;
         tgui::Gui & gui;
         ProjectManager manager;
         void setupLayout();

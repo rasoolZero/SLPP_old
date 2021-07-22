@@ -3,8 +3,7 @@
 Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
 {
     tgui::Theme::setDefault("theme.txt");
-    manager.setGUI(&gui);
-    manager.setContainer(&container);
+    container = std::make_unique<AudioContainer>();
     setupLayout();
     setupButtons();
     setupPageButtons();
@@ -24,6 +23,8 @@ Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
         gui.add(panel, "TransparentBackground");
         gui.add(box,"ErrorBox");
     }
+    manager.setGUI(&gui);
+    manager.setContainer(container.get());
 }
 void Program::windowClosed(sf::RenderWindow * window){
     window->close();
@@ -70,7 +71,7 @@ void Program::setupButtons(){
                 if(j==2 || j==5)
                     button->setText(s);
             button->setRowCol(i,j);
-            button->setContainer(&container);
+            button->setContainer(container.get());
             button->onClick(&CButton::openFile,button);
             button->onRightClick(&Program::createConfigWindow,this,i*8+j);
             button->setToolTip(tooltip);
@@ -98,7 +99,7 @@ void Program::setupPageButtons(){
 //    button->setVisible(false);
     button->setText("Stop All\nPlaying\nSounds");
     button->setTextSize(0);
-    button->onClick(&AudioContainer::stopAll,&container);
+    button->onClick(&AudioContainer::stopAll,container.get());
     hl->add(button);
     hl->insertSpace(16,0.4);
 
@@ -126,11 +127,11 @@ void Program::setPageNumber(int pn){
     gui.get<tgui::Button>("PageButton"+std::to_string(pageNumber))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
     pageNumber=pn;
     gui.get<tgui::Button>("PageButton"+std::to_string(pn))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButtonSelected"));
-    container.setPageNumber(pageNumber);
+    container->setPageNumber(pageNumber);
 }
 
 void Program::trigger(int row,int col,bool down){
-    container.trigger(row,col,down);
+    container->trigger(row,col,down);
     gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
 }
 
@@ -187,7 +188,7 @@ void Program::createConfigWindow(int index){
 
 void Program::setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index){
     tgui::Button::Ptr button = tgui::Button::create();
-    button->setText(container.getSound(pageNumber,index)->isLooped()?"looping":"not looping");
+    button->setText(container->getSound(pageNumber,index)->isLooped()?"looping":"not looping");
     button->onClick(&Program::loopButtonClick,this,index);
     window->get<tgui::HorizontalLayout>("configHL")->add(button,"LoopButton");
 }
@@ -202,11 +203,11 @@ void Program::setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index){
 }
 
 void Program::removeButtonClick(int index){
-    container.getSound(pageNumber,index)->clearSample();
+    container->getSound(pageNumber,index)->clearSample();
 }
 
 void Program::loopButtonClick(int index){
-    Audio * sound = container.getSound(pageNumber,index);
+    Audio * sound = container->getSound(pageNumber,index);
     bool looping = sound->isLooped();
     looping=!looping;
     sound->setLooping(looping);
