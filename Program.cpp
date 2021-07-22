@@ -291,7 +291,16 @@ void Program::loadedSoundsWindow(){
             for(int k=0;k<8;k++){
                 auto panel = tgui::Panel::create();
                 bool loaded = container->getSound(i,j*8+k)->isLoaded();
+                bool looped = container->getSound(i,j*8+k)->isLooped();
+                if(looped){
+                    auto lbl = tgui::Label::create();
+                    lbl->setText("Looped");
+                    lbl->setPosition("(parent.innersize - size) / 2");
+                    lbl->getRenderer()->setTextColor(sf::Color(125,125,125));
+                    panel->add(lbl);
+                }
                 panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
+                panel->onClick([&]{std::cout << "h" << std::endl;});
                 hl->add(panel);
             }
             for(int k=0;k<=8;k++)
