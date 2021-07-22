@@ -2,14 +2,31 @@
 
 Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
 {
+    tgui::Theme::setDefault("theme.txt");
     manager.setGUI(&gui);
     manager.setContainer(&container);
-    tgui::Theme::setDefault("theme.txt");
     setupLayout();
     setupButtons();
     setupPageButtons();
     setupMenuBar(window);
     setPageNumber(0);
+    try{
+        midi = std::make_unique<MIDI>(*this);
+        loaded=true;
+    }
+    catch(std::runtime_error & e){
+        tgui::MessageBox::Ptr box = tgui::MessageBox::create();
+        box->setText("No MIDI Device found.\nMake sure your Launchpad is connected");
+        box->addButton("Close");
+        box->onButtonPress(&Program::windowClosed,this,window);
+        auto panel = tgui::Panel::create({"100%", "100%"});
+        panel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
+        gui.add(panel, "TransparentBackground");
+        gui.add(box,"ErrorBox");
+    }
+}
+void Program::windowClosed(sf::RenderWindow * window){
+    window->close();
 }
 
 void Program::run(){
@@ -135,6 +152,8 @@ void Program::setupMenuBar(sf::RenderWindow * window){
 }
 
 void Program::handleEvent(sf::Event event){
+    if(!loaded)
+        return ;
     if (event.type == sf::Event::KeyPressed){
         if(event.key.control){
             if(event.key.code == sf::Keyboard::O)

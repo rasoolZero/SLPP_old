@@ -2,7 +2,7 @@
 #define MIDI_H
 #include "RtMidi.h"
 #include <memory>
-#include <Program.h>
+class Program;
 class MIDI
 {
     public:

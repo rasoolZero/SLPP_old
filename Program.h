@@ -5,6 +5,7 @@
 #include <CButton.h>
 #include <AudioContainer.h>
 #include <ProjectManager.h>
+#include <MIDI.h>
 #define MENU_HEIGHT 22.f
 
 
@@ -23,6 +24,7 @@ class Program
     protected:
 
     private:
+        std::unique_ptr<MIDI> midi;
         AudioContainer container;
         tgui::Gui & gui;
         ProjectManager manager;
@@ -31,11 +33,15 @@ class Program
         void setupPageButtons();
         void setupMenuBar(sf::RenderWindow * window);
 
+        void windowClosed(sf::RenderWindow * window);
+
         void setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index);
         void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
 
         void removeButtonClick(int index);
         void loopButtonClick(int index);
+
+        bool loaded=false;
 
         int pageNumber=0;
 };

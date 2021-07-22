@@ -1,4 +1,3 @@
-#include <MIDI.h>
 #include <Program.h>
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
@@ -9,15 +8,6 @@ int main()
     tgui::Gui gui(window);
 
     Program p(gui,& window);
-
-    std::unique_ptr<MIDI> midi;
-    try{
-        midi = std::make_unique<MIDI>(p);
-    }
-    catch(std::runtime_error & e){
-        std::cout << e.what();
-        return 1;
-    }
 
     while (window.isOpen())
     {
