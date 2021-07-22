@@ -274,6 +274,10 @@ void Program::loadedSoundsWindow(){
     mainPanel->setHorizontalScrollbarPolicy(tgui::Scrollbar::Policy::Never);
     window->add(mainPanel);
 
+    auto tooltip = tgui::Label::create();
+    tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
+    tooltip->setText("Click to play the loaded sound");
+
     auto verticalLayout = tgui::VerticalLayout::create();
     verticalLayout->setSize("100%","1600%");
     mainPanel->add(verticalLayout);
@@ -299,6 +303,7 @@ void Program::loadedSoundsWindow(){
                     lbl->getRenderer()->setTextColor(sf::Color(125,125,125));
                     panel->add(lbl);
                 }
+                panel->setToolTip(tooltip);
                 panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
                 panel->onClick(AudioContainer::triggerPN,container.get(),i,j,k,true);
                 hl->add(panel);
