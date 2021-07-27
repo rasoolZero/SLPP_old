@@ -367,7 +367,7 @@ void Program::lightWindow(int row,int col){
             }
             panel->setToolTip(tooltip);
             panel->getRenderer()->setBackgroundColor(clr);
-//            panel->onClick(change color function);
+            panel->onClick(&Program::lightPanelClick,this,row,col,j*8+k,panel);
             hl->add(panel);
         }
         for(int k=0;k<=8;k++)
@@ -389,4 +389,34 @@ void Program::lightWindow(int row,int col){
     disable();
     gui.add(window);
     createConfigWindow(row*8+col,window);
+}
+
+void Program::lightPanelClick(int row,int col,int index,tgui::Panel::Ptr panel){
+    int currentColor = lightManager->getLight(pageNumber,row,col,index);
+    sf::Color clr;
+    int newColor;
+    switch (currentColor){
+    case 12:
+        newColor=15;
+        clr=sf::Color::Red;
+        break;
+    case 15:
+        newColor=63;
+        clr=sf::Color(255, 191, 0);
+        break;
+    case 63:
+        newColor=60;
+        clr=sf::Color::Green;
+        break;
+    case 60:
+        newColor=62;
+        clr=sf::Color::Yellow;
+        break;
+    case 62:
+        newColor=12;
+        clr=sf::Color::Black;
+        break;
+    }
+    panel->getRenderer()->setBackgroundColor(clr);
+    lightManager->setLight(pageNumber,row,col,index,newColor);
 }

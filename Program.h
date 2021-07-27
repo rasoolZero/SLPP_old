@@ -49,6 +49,8 @@ class Program
         void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
         void createConfigWindow(int index,tgui::ChildWindow::Ptr parent);
 
+        void lightPanelClick(int row,int col,int index,tgui::Panel::Ptr panel);
+
         void removeButtonClick(int index);
         void loopButtonClick(int index);
 
