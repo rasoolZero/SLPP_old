@@ -3,13 +3,14 @@
 #include <TGUI/TGUI.hpp>
 #include <vector>
 #include <AudioContainer.h>
+#include <LightManager.h>
 
 class Program;
 
 class ProjectManager
 {
     public:
-        ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container);
+        ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container, LightManager & _lightManager);
         void saveAs();
         void save();
         void open();
@@ -21,6 +22,7 @@ class ProjectManager
         Program & program;
         tgui::Gui & gui;
         AudioContainer & container;
+        LightManager & lightManager;
         tgui::Filesystem::Path projectPath;
         tgui::Filesystem::Path oldPath;
 

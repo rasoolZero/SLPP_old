@@ -2,7 +2,8 @@
 #include <fstream>
 #include <Program.h>
 
-ProjectManager::ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container) : program (_program),gui(_gui),container(_container)
+ProjectManager::ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container, LightManager & _lightManager) :
+                                                                program (_program),gui(_gui),container(_container),lightManager(_lightManager)
 {
 
 }
@@ -68,7 +69,7 @@ void ProjectManager::saveData(){
     Audio * sound;
     Mix_Chunk * sample;
     try{
-        for(int i=0;i<16;i++)
+        for(int i=0;i<16;i++){
             for(int j=0;j<64;j++){
                 sound = container.getSound(i,j);
                 bool loaded = sound->isLoaded();
@@ -81,6 +82,16 @@ void ProjectManager::saveData(){
                     fwrite(sample->abuf,sizeof(Uint8),sample->alen,file);
                 }
             }
+            for(int j=0;j<8;j++)
+                for(int k=0;k<8;k++)
+                    for(int t=0;t<64;t++){
+                        int light = lightManager.getLight(i,j,k,t);
+                        fwrite(&light,sizeof(light),1,file);
+                    }
+
+
+        }
+
     }
     catch(std::exception & e){
         std::string message = std::string("Could not save the data,Error Details:\n")+std::string(e.what());
@@ -99,7 +110,7 @@ void ProjectManager::loadData(){
     Audio * sound;
     Mix_Chunk * sample;
     try{
-        for(int i=0;i<16;i++)
+        for(int i=0;i<16;i++){
             for(int j=0;j<64;j++){
                 sound = container.getSound(i,j);
                 sound->clearSample();
@@ -118,6 +129,16 @@ void ProjectManager::loadData(){
                     sound->setSample(sample);
                 }
             }
+            for(int j=0;j<8;j++)
+                for(int k=0;k<8;k++)
+                    for(int t=0;t<64;t++){
+                        int light;
+                        fread(&light,sizeof(light),1,file);
+                        if(light==12)
+                            continue;
+                        lightManager.setLight(i,j,k,t,light);
+                    }
+        }
     }
     catch(std::exception & e){
         program.createErrorBox("Project file is corrupted or is not compatible with this version");

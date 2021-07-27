@@ -10,8 +10,8 @@ Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
     try{
         container = std::make_unique<AudioContainer>();
         midi = std::make_unique<MIDI>(*this);
-        manager = std::make_unique<ProjectManager>(*this,gui,*(container));
         lightManager = std::make_unique<LightManager>(*(midi));
+        manager = std::make_unique<ProjectManager>(*this,gui,*(container),*(lightManager));
         pollingEvents=true;
         setPageNumber(0);
 
