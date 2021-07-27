@@ -4,10 +4,12 @@
 MIDI::MIDI(Program & _program) : program(_program)
 {
     midiin = std::make_unique<RtMidiIn>();
+    midiout = std::make_unique<RtMidiOut>();
     unsigned int nPorts = midiin->getPortCount();
     if(nPorts==0)
         throw std::runtime_error("Error:\nNo MIDI Device found.\nMake sure your Launchpad is connected.");
     midiin->openPort( 0 );
+    midiout->openPort( 1 );
     midiin->setCallback(&midiInput,this);
 
 }
@@ -19,6 +21,13 @@ int MIDI::page(std::vector< unsigned char > *message){
     if ((buttonNumber-8)%16 == 0)
         return (buttonNumber-8)/16 + 8;
     return -1;
+}
+void MIDI::updateLights(std::unordered_map<int,int> & lights,bool down){
+    std::vector<unsigned char> message(3);
+    for(std::pair<int,int> light : lights){
+        message = {144,light.first,down?light.second:12};
+        midiout->sendMessage(&message);
+    }
 }
 
 

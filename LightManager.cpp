@@ -10,7 +10,7 @@ LightManager::LightManager(MIDI & _midi) : midi(_midi)
 }
 void LightManager::trigger(int pn,int row,int col,bool down){
     int index = row*8+col;
-    //midi now plays lights[pn][index];
+    midi.updateLights(lights[pn][index],down);
 }
 
 void LightManager::setLight(int pn,int row,int col,int buttonIndex,int light){
