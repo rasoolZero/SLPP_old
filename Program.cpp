@@ -58,7 +58,7 @@ void Program::setupButtons(){
     tgui::String const s = U"\u2022";
     auto tooltip = tgui::Label::create();
     tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
-    tooltip->setText("Click to load sound\nRight Click to open Config Window");
+    tooltip->setText("Click to load sound\nRight Click to open Config and Light Window");
     for(int i=0;i<8;i++){
         tgui::HorizontalLayout::Ptr hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
         for(int j=0;j<8;j++){
