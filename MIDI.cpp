@@ -25,7 +25,11 @@ int MIDI::page(std::vector< unsigned char > *message){
 void MIDI::updateLights(std::unordered_map<int,int> & lights,bool down){
     std::vector<unsigned char> message(3);
     for(std::pair<int,int> light : lights){
-        message = {144,light.first,down?light.second:12};
+        int buttonIndex = light.first;
+        int row = buttonIndex/8;
+        int col = buttonIndex%8;
+        buttonIndex = row*16+col;
+        message = {144,buttonIndex,down?light.second:12};
         midiout->sendMessage(&message);
     }
 }

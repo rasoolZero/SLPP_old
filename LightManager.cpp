@@ -7,10 +7,10 @@ LightManager::LightManager(MIDI & _midi) : midi(_midi)
     for(int i=0;i<16;i++){
         lights[i].resize(64);
     }
-    setLight(0,0,0,4,62);
-    setLight(0,0,0,5,63);
-    setLight(0,0,0,6,60);
-    setLight(0,0,0,7,15);
+//    setLight(0,0,0,4,62);
+//    setLight(0,0,0,5,63);
+//    setLight(0,0,0,6,60);
+//    setLight(0,0,0,7,15);
 }
 void LightManager::trigger(int pn,int row,int col,bool down){
     int index = row*8+col;
