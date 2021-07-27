@@ -5,6 +5,7 @@
 #include <CButton.h>
 #include <AudioContainer.h>
 #include <ProjectManager.h>
+#include "LightManager.h"
 #include <MIDI.h>
 #define MENU_HEIGHT 22.f
 
@@ -34,6 +35,7 @@ class Program
         std::unique_ptr<MIDI> midi;
         std::unique_ptr<AudioContainer> container;
         std::unique_ptr<ProjectManager> manager;
+        std::unique_ptr<LightManager> lightManager;
         tgui::Gui & gui;
         void setupLayout();
         void setupButtons();
