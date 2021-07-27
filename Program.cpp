@@ -71,7 +71,6 @@ void Program::setupButtons(){
                     button->setText(s);
             button->setRowCol(i,j);
             button->onClick(&CButton::openFile,button);
-//            button->onRightClick(&Program::createConfigWindow,this,i*8+j);
             button->onRightClick(&Program::lightWindow,this,i,j);
             button->setToolTip(tooltip);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
@@ -95,7 +94,6 @@ void Program::setupPageButtons(){
         hl->insertSpace(i*2,0.2);
     }
     tgui::Button::Ptr button = tgui::Button::create();
-//    button->setVisible(false);
     button->setText("Stop All\nPlaying\nSounds");
     button->setTextSize(0);
     button->onClick(&AudioContainer::stopAll,container.get());
@@ -185,13 +183,11 @@ void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
     hl->setSize("100%","30%");
     hl->setPosition("0%","35%");
     childWindow->add(hl,"configHL");
-//    childWindow->onClose([&]{ this->enable();});
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
     setupConfigClearLightsButton(childWindow,index);
     for(int i=0;i<4;i++)
         hl->insertSpace(i*2,0.1f);
-//    disable();
     parent->add(childWindow,"Config");
 }
 
