@@ -1,6 +1,6 @@
 #include "ProjectManager.h"
 #include <fstream>
-#include <Program.h>
+#include "Program.h"
 
 ProjectManager::ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container, LightManager & _lightManager) :
                                                                 program (_program),gui(_gui),container(_container),lightManager(_lightManager)

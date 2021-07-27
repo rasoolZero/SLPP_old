@@ -2,11 +2,11 @@
 #define PROGRAM_H
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
-#include <CButton.h>
-#include <AudioContainer.h>
-#include <ProjectManager.h>
+#include "CButton.h"
+#include "AudioContainer.h"
+#include "ProjectManager.h"
 #include "LightManager.h"
-#include <MIDI.h>
+#include "MIDI.h"
 #define MENU_HEIGHT 22.f
 
 

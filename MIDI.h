@@ -1,6 +1,6 @@
 #ifndef MIDI_H
 #define MIDI_H
-#include "RtMidi.h"
+#include <RtMidi.h>
 #include <memory>
 #include <unordered_map>
 class Program;

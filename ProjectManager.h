@@ -2,8 +2,8 @@
 #define PROJECTMANAGER_H
 #include <TGUI/TGUI.hpp>
 #include <vector>
-#include <AudioContainer.h>
-#include <LightManager.h>
+#include "AudioContainer.h"
+#include "LightManager.h"
 
 class Program;
 

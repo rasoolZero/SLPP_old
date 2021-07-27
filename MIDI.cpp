@@ -1,5 +1,5 @@
 #include "MIDI.h"
-#include <Program.h>
+#include "Program.h"
 
 MIDI::MIDI(Program & _program) : program(_program)
 {
