@@ -188,8 +188,9 @@ void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
 //    childWindow->onClose([&]{ this->enable();});
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
-    for(int i=0;i<3;i++)
-        hl->insertSpace(i*2,0.3f);
+    setupConfigClearLightsButton(childWindow,index);
+    for(int i=0;i<4;i++)
+        hl->insertSpace(i*2,0.1f);
 //    disable();
     parent->add(childWindow,"Config");
 }
@@ -208,6 +209,20 @@ void Program::setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index){
     button->getRenderer()->setTextColor(sf::Color::Red);
     button->onClick(&Program::removeButtonClick,this,index);
     window->get<tgui::HorizontalLayout>("configHL")->add(button,"RemoveButton");
+}
+
+void Program::setupConfigClearLightsButton(tgui::ChildWindow::Ptr window,int index){
+    tgui::Button::Ptr button = tgui::Button::create();
+    button->setText("Reset Lights");
+    button->getRenderer()->setTextColor(sf::Color::Red);
+    button->onClick(&Program::resetLightButtonClick,this,index);
+    window->get<tgui::HorizontalLayout>("configHL")->add(button,"ResetButton");
+}
+
+void Program::resetLightButtonClick(int index){
+    lightManager->reset(pageNumber,index);
+    for(int i=0;i<64;i++)
+        gui.get<tgui::Panel>("ColorPanel"+std::to_string(i))->getRenderer()->setBackgroundColor(sf::Color::Black);
 }
 
 void Program::removeButtonClick(int index){
@@ -368,7 +383,7 @@ void Program::lightWindow(int row,int col){
             panel->setToolTip(tooltip);
             panel->getRenderer()->setBackgroundColor(clr);
             panel->onClick(&Program::lightPanelClick,this,row,col,j*8+k,panel);
-            hl->add(panel);
+            hl->add(panel,"ColorPanel"+std::to_string(j*8+k));
         }
         for(int k=0;k<=8;k++)
             hl->insertSpace(k*2,k==4?0.4:0.2);

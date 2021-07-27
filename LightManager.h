@@ -12,6 +12,7 @@ class LightManager
         void trigger(int pn,int row,int col,bool down);
         void setLight(int pn,int row,int col,int buttonIndex,int light);
         int getLight(int pn,int row,int col,int buttonIndex);
+        void reset(int pn,int index);
 
     protected:
 

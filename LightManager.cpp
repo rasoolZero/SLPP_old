@@ -32,3 +32,7 @@ int LightManager::getLight(int pn,int row,int col,int buttonIndex){
         return 12;
     return lights[pn][index][buttonIndex];
 }
+
+void LightManager::reset(int pn,int index){
+    lights[pn][index].clear();
+}
