@@ -13,6 +13,7 @@ class LightManager
         void setLight(int pn,int row,int col,int buttonIndex,int light);
         int getLight(int pn,int row,int col,int buttonIndex);
         void reset(int pn,int index);
+        int getLightCount(int pn,int row,int col);
 
     protected:
 

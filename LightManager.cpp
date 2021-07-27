@@ -36,3 +36,8 @@ int LightManager::getLight(int pn,int row,int col,int buttonIndex){
 void LightManager::reset(int pn,int index){
     lights[pn][index].clear();
 }
+
+int LightManager::getLightCount(int pn,int row,int col){
+    int index = row*8+col;
+    return lights[pn][index].size();
+}

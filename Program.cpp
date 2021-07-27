@@ -294,7 +294,7 @@ void Program::loadedSoundsWindow(){
 
     auto tooltip = tgui::Label::create();
     tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
-    tooltip->setText("Click to play the loaded sound");
+    tooltip->setText("Click to play the loaded sound.\nNumbers are the light counters");
 
     auto verticalLayout = tgui::VerticalLayout::create();
     verticalLayout->setSize("100%","1600%");
@@ -314,13 +314,16 @@ void Program::loadedSoundsWindow(){
                 auto panel = tgui::Panel::create();
                 bool loaded = container->getSound(i,j*8+k)->isLoaded();
                 bool looped = container->getSound(i,j*8+k)->isLooped();
+                int lightCount = lightManager->getLightCount(i,j,k);
+                std::string text = std::to_string(lightCount);
                 if(looped){
-                    auto lbl = tgui::Label::create();
-                    lbl->setText("Looped");
-                    lbl->setPosition("(parent.innersize - size) / 2");
-                    lbl->getRenderer()->setTextColor(sf::Color(125,125,125));
-                    panel->add(lbl);
+                    text+="\nLooped";
                 }
+                auto lbl = tgui::Label::create();
+                lbl->setText(text);
+                lbl->setPosition("(parent.innersize - size) / 2");
+                lbl->getRenderer()->setTextColor(sf::Color(125,125,125));
+                panel->add(lbl);
                 panel->setToolTip(tooltip);
                 panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
                 panel->onClick(AudioContainer::triggerPN,container.get(),i,j,k,true);
