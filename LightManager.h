@@ -11,6 +11,7 @@ class LightManager
         LightManager(MIDI & _midi);
         void trigger(int pn,int row,int col,bool down);
         void setLight(int pn,int row,int col,int buttonIndex,int light);
+        int getLight(int pn,int row,int col,int buttonIndex);
 
     protected:
 

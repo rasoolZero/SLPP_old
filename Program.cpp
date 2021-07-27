@@ -329,3 +329,55 @@ void Program::loadedSoundsWindow(){
     disable();
     gui.add(window);
 }
+
+void Program::lightWindow(int row,int col){
+    auto window = tgui::ChildWindow::create("");
+    window->setSize(gui.getTarget()->getSize().x,gui.getTarget()->getSize().y);
+    window->setPositionLocked();
+
+    auto tooltip = tgui::Label::create();
+    tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
+    tooltip->setText("Click to change the light");
+
+    auto vl = tgui::VerticalLayout::create();
+    for(int j=0;j<8;j++){
+        auto hl = tgui::HorizontalLayout::create();
+
+        for(int k=0;k<8;k++){
+            auto panel = tgui::Panel::create();
+            int color = lightManager->getLight(pageNumber,row,col,j*8+k);
+            sf::Color clr;
+            switch (color){
+            case 12:
+                clr=sf::Color::Black;
+            case 15:
+                clr=sf::Color::Red;
+            case 63:
+                clr=sf::Color(255, 191, 0);
+            case 60:
+                clr=sf::Color::Green;
+            }
+            panel->setToolTip(tooltip);
+            panel->getRenderer()->setBackgroundColor(clr);
+//            panel->onClick(change color function);
+            hl->add(panel);
+        }
+        for(int k=0;k<=8;k++)
+            hl->insertSpace(k*2,k==4?0.4:0.2);
+
+        vl->add(hl);
+    }
+    for(int j=0;j<=8;j++)
+        vl->insertSpace(j*2,j==4?0.4:0.2);
+    vl->setSize("50%","100%");
+    vl->setPosition("25%","0%");
+
+
+    window->add(vl);
+
+
+
+    window->onClose([&]{ this->enable();});
+    disable();
+    gui.add(window);
+}

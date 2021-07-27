@@ -25,6 +25,7 @@ class Program
         void operate(Operations operation);
         void createErrorBox(const char * message);
         void loadedSoundsWindow();
+        void lightWindow(int row,int col);
 
         void disable();
         void enable();
