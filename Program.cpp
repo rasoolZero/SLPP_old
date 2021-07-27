@@ -71,7 +71,8 @@ void Program::setupButtons(){
                     button->setText(s);
             button->setRowCol(i,j);
             button->onClick(&CButton::openFile,button);
-            button->onRightClick(&Program::createConfigWindow,this,i*8+j);
+//            button->onRightClick(&Program::createConfigWindow,this,i*8+j);
+            button->onRightClick(&Program::lightWindow,this,i,j);
             button->setToolTip(tooltip);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
             hl->insertSpace(j*2,0.2);
@@ -178,19 +179,19 @@ void Program::handleEvent(sf::Event event){
     }
 }
 
-void Program::createConfigWindow(int index){
+void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
     tgui::ChildWindow::Ptr childWindow = tgui::ChildWindow::create("Config");
     tgui::HorizontalLayout::Ptr hl = tgui::HorizontalLayout::create();
     hl->setSize("100%","30%");
     hl->setPosition("0%","35%");
     childWindow->add(hl,"configHL");
-    childWindow->onClose([&]{ this->enable();});
+//    childWindow->onClose([&]{ this->enable();});
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
     for(int i=0;i<3;i++)
         hl->insertSpace(i*2,0.3f);
-    disable();
-    gui.add(childWindow,"Config");
+//    disable();
+    parent->add(childWindow,"Config");
 }
 
 void Program::setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index){
@@ -350,12 +351,19 @@ void Program::lightWindow(int row,int col){
             switch (color){
             case 12:
                 clr=sf::Color::Black;
+                break;
             case 15:
                 clr=sf::Color::Red;
+                break;
             case 63:
                 clr=sf::Color(255, 191, 0);
+                break;
             case 60:
                 clr=sf::Color::Green;
+                break;
+            case 62:
+                clr=sf::Color::Yellow;
+                break;
             }
             panel->setToolTip(tooltip);
             panel->getRenderer()->setBackgroundColor(clr);
@@ -380,4 +388,5 @@ void Program::lightWindow(int row,int col){
     window->onClose([&]{ this->enable();});
     disable();
     gui.add(window);
+    createConfigWindow(row*8+col,window);
 }

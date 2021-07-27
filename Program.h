@@ -20,7 +20,6 @@ class Program
         void setPageNumber(int pn);
         void trigger(int row,int col,bool down);
         void handleEvent(sf::Event event);
-        void createConfigWindow(int index);
         void load(int row,int col,std::string address);
         void operate(Operations operation);
         void createErrorBox(const char * message);
@@ -48,6 +47,7 @@ class Program
 
         void setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index);
         void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
+        void createConfigWindow(int index,tgui::ChildWindow::Ptr parent);
 
         void removeButtonClick(int index);
         void loopButtonClick(int index);
