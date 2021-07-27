@@ -5,6 +5,9 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SLPP", sf::Style::Fullscreen);
+    sf::Image icon;
+    icon.loadFromFile("themes/Icon.png");
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     tgui::Gui gui(window);
 
     Program p(gui,& window);
