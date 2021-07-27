@@ -33,18 +33,14 @@ AudioContainer::~AudioContainer(){
 }
 
 
-void AudioContainer::trigger(int row,int col,bool down){
-    int index = row*8+col;
-    sounds[pageNumber][index].trigger(down);
-}
-void AudioContainer::triggerPN(int pn,int row,int col,bool down){
+void AudioContainer::trigger(int pn,int row,int col,bool down){
     int index = row*8+col;
     sounds[pn][index].trigger(down);
 }
 
-void AudioContainer::load(int row,int col,std::string address){
+void AudioContainer::load(int pn,int row,int col,std::string address){
     int index = row*8+col;
-    sounds[pageNumber][index].load(address);
+    sounds[pn][index].load(address);
 }
 
 void AudioContainer::stopAll(){

@@ -11,18 +11,15 @@ class AudioContainer
     public:
         AudioContainer();
         ~AudioContainer();
-        void setPageNumber(int pn){pageNumber=pn;}
-        void trigger(int row,int col,bool down);
-        void triggerPN(int pn,int row,int col,bool down);
+        void trigger(int pn,int row,int col,bool down);
         void stopAll();
-        void load(int row,int col,std::string address);
+        void load(int pn,int row,int col,std::string address);
         Audio * getSound(int pn,int index);
 
     protected:
 
     private:
         std::vector<std::vector<Audio>> sounds;
-        int pageNumber;
 };
 
 #endif // AUDIOCONTAINER_H

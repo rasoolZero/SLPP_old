@@ -124,13 +124,12 @@ void Program::setPageNumber(int pn){
     gui.get<tgui::Button>("PageButton"+std::to_string(pageNumber))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButton"));
     pageNumber=pn;
     gui.get<tgui::Button>("PageButton"+std::to_string(pn))->setRenderer(tgui::Theme::getDefault()->getRenderer("PageButtonSelected"));
-    container->setPageNumber(pageNumber);
 }
 
 void Program::trigger(int row,int col,bool down){
     if(!pollingEvents)
         return ;
-    container->trigger(row,col,down);
+    container->trigger(pageNumber,row,col,down);
     lightManager->trigger(pageNumber,row,col,down);
     gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
 }
@@ -236,7 +235,7 @@ void Program::loopButtonClick(int index){
 
 void Program::load(int row,int col,std::string address){
     try{
-        container->load(row,col,address);
+        container->load(pageNumber,row,col,address);
     }
     catch(std::runtime_error & e){
         createErrorBox(e.what());
@@ -322,7 +321,7 @@ void Program::loadedSoundsWindow(){
                 panel->add(lbl);
                 panel->setToolTip(tooltip);
                 panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
-                panel->onClick(AudioContainer::triggerPN,container.get(),i,j,k,true);
+                panel->onClick(AudioContainer::trigger,container.get(),i,j,k,true);
                 hl->add(panel);
             }
             for(int k=0;k<=8;k++)
