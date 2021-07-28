@@ -6,7 +6,7 @@ AudioContainer::AudioContainer()
     if(SDL_Init(SDL_INIT_AUDIO)==-1) {
         throw std::runtime_error(std::string("Error on SDL_Init\n")+std::string(SDL_GetError()));
     }
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 8192)==-1) {
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096)==-1) {
         throw std::runtime_error(std::string("Error on Mix_OpenAudio\n")+std::string(Mix_GetError()));
     }
     int flags=MIX_INIT_OGG|MIX_INIT_MOD|MIX_INIT_FLAC|MIX_INIT_MP3;

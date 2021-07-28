@@ -1,5 +1,4 @@
 #include "Audio.h"
-
 Audio::Audio(int _channelNumber)
 {
     channelNumber=_channelNumber;
@@ -29,6 +28,10 @@ void Audio::trigger(bool down){
             Mix_HaltChannel(channelNumber);
         else
             Mix_PlayChannel(channelNumber, sample, looping?-1:0 );
+    }
+    else{
+        if(isPlaying && !looping)
+            Mix_HaltChannel(channelNumber);
     }
 }
 
