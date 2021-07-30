@@ -151,7 +151,7 @@ void Program::setupMenuBar(sf::RenderWindow * window){
 
     menu->addMenu("View");
     menu->addMenuItem("Show Buttons with loaded sound (F2)");
-    menu->connectMenuItem({"View","Show Buttons with loaded sound (F2)"},&Program::loadedSoundsWindow,this);
+    menu->connectMenuItem({"View","Show Buttons with loaded sound (F2)"},&Program::statusWindow,this);
     gui.add(menu);
 }
 
@@ -172,7 +172,7 @@ void Program::handleEvent(sf::Event event){
             }
         }
         if(event.key.code == sf::Keyboard::F2)
-            loadedSoundsWindow();
+            statusWindow();
     }
 }
 
@@ -299,7 +299,7 @@ void Program::enable(){
     gui.remove(gui.get("TransparentBackground"));
 }
 
-void Program::loadedSoundsWindow(){
+void Program::statusWindow(){
     auto window = tgui::ChildWindow::create("");
     window->setSize(gui.getTarget()->getSize().x,gui.getTarget()->getSize().y);
     window->setPositionLocked();
@@ -330,10 +330,14 @@ void Program::loadedSoundsWindow(){
                 auto panel = tgui::Panel::create();
                 bool loaded = container->getSound(i,j*8+k)->isLoaded();
                 bool looped = container->getSound(i,j*8+k)->isLooped();
+                bool holding = lightManager->getHold(i,j*8+k);
                 int lightCount = lightManager->getLightCount(i,j,k);
                 std::string text = std::to_string(lightCount);
                 if(looped){
                     text+="\nLooped";
+                }
+                if(holding){
+                    text+="\nHolding";
                 }
                 auto lbl = tgui::Label::create();
                 lbl->setText(text);

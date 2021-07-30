@@ -23,7 +23,7 @@ class Program
         void load(int row,int col,std::string address);
         void operate(Operations operation);
         void createErrorBox(const char * message);
-        void loadedSoundsWindow();
+        void statusWindow();
         void lightWindow(int row,int col);
 
         void disable();
