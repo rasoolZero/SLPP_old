@@ -1,5 +1,6 @@
 #include "ProjectManager.h"
 #include <fstream>
+#include <direct.h>
 #include "Program.h"
 
 ProjectManager::ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container, LightManager & _lightManager) :
@@ -46,6 +47,7 @@ void ProjectManager::saveAsP(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
         return ;
     projectPath = paths[0];
+    chdir(paths[0].getParentPath().asString().toStdString().c_str());
     saveData();
 }
 
@@ -56,6 +58,7 @@ void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
         return ;
     projectPath = paths[0];
+    chdir(paths[0].getParentPath().asString().toStdString().c_str());
     loadData();
 }
 
