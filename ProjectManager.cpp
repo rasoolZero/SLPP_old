@@ -91,7 +91,10 @@ void ProjectManager::saveData(){
                         int light = lightManager.getLight(i,j,k,t);
                         fwrite(&light,sizeof(light),1,file);
                     }
-
+            for(int j=0;j<64;j++){
+                bool holding = lightManager.getHold(i,j);
+                fwrite(&holding,sizeof(holding),1,file);
+            }
 
         }
 
@@ -142,6 +145,11 @@ void ProjectManager::loadData(){
                             continue;
                         lightManager.setLight(i,j,k,t,light);
                     }
+            for(int j=0;j<64;j++){
+                bool holding;
+                fread(&holding,sizeof(holding),1,file);
+                lightManager.setHold(i,j,holding);
+            }
         }
     }
     catch(std::exception & e){
