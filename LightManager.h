@@ -19,6 +19,7 @@ class LightManager
 
     private:
         std::vector<std::vector<std::unordered_map<int,int>>> lights;
+        std::vector<std::vector<bool>> lightHold;
         MIDI & midi;
 };
 

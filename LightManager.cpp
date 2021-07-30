@@ -4,13 +4,17 @@ LightManager::LightManager(MIDI & _midi) : midi(_midi)
 {
 
     lights.resize(16);
+    lightHold.resize(16);
     for(int i=0;i<16;i++){
         lights[i].resize(64);
+        for(int j=0;j<64;j++)
+            lightHold[i].push_back(false);
     }
 }
 void LightManager::trigger(int pn,int row,int col,bool down){
     int index = row*8+col;
-    midi.updateLights(lights[pn][index],down);
+    if(down || (!down && !lightHold[pn][index]))
+        midi.updateLights(lights[pn][index],down);
 }
 
 void LightManager::setLight(int pn,int row,int col,int buttonIndex,int light){
