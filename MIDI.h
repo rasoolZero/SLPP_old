@@ -8,6 +8,7 @@ class MIDI
 {
     public:
         MIDI(Program & _program);
+        ~MIDI();
         int page(std::vector< unsigned char > *message);
         Program & getProgram(){return program;}
         void updateLights(std::unordered_map<int,int> & lights,bool down);
@@ -17,6 +18,7 @@ class MIDI
         std::unique_ptr<RtMidiIn> midiin;
         std::unique_ptr<RtMidiOut> midiout;
         Program & program;
+        void resetDevice();
 };
 void midiInput( double deltatime, std::vector< unsigned char > *message, void *userData);
 

@@ -11,7 +11,10 @@ MIDI::MIDI(Program & _program) : program(_program)
     midiin->openPort( 0 );
     midiout->openPort( 1 );
     midiin->setCallback(&midiInput,this);
-
+    resetDevice();
+}
+MIDI::~MIDI(){
+    resetDevice();
 }
 int MIDI::page(std::vector< unsigned char > *message){
     int buttonNumber = message->at(1);
@@ -34,6 +37,10 @@ void MIDI::updateLights(std::unordered_map<int,int> & lights,bool down){
     }
 }
 
+void MIDI::resetDevice(){
+    std::vector<unsigned char> message={176,0,0};
+    midiout->sendMessage(&message);
+}
 
 void midiInput( double deltatime, std::vector< unsigned char > *message, void *userData){
     bool down = message->at(2)==127;
