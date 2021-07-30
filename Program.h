@@ -48,6 +48,7 @@ class Program
         void setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index);
         void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
         void setupConfigClearLightsButton(tgui::ChildWindow::Ptr window,int index);
+        void setupConfigLightHoldButton(tgui::ChildWindow::Ptr window,int index);
         void createConfigWindow(int index,tgui::ChildWindow::Ptr parent);
 
         void lightPanelClick(int row,int col,int index,tgui::Panel::Ptr panel);
@@ -55,6 +56,7 @@ class Program
         void removeButtonClick(int index);
         void loopButtonClick(int index);
         void resetLightButtonClick(int index);
+        void lightHoldButtonClick(int index);
 
         bool pollingEvents=false;
 

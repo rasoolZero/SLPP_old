@@ -178,15 +178,24 @@ void Program::handleEvent(sf::Event event){
 
 void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
     tgui::ChildWindow::Ptr childWindow = tgui::ChildWindow::create("Config");
-    tgui::HorizontalLayout::Ptr hl = tgui::HorizontalLayout::create();
-    hl->setSize("100%","30%");
-    hl->setPosition("0%","35%");
-    childWindow->add(hl,"configHL");
+    tgui::VerticalLayout::Ptr vl = tgui::VerticalLayout::create();
+    vl->setSize("70%","100%");
+    vl->setPosition("15%","0%");
+    tgui::HorizontalLayout::Ptr hl1 = tgui::HorizontalLayout::create();
+    tgui::HorizontalLayout::Ptr hl2 = tgui::HorizontalLayout::create();
+    vl->add(hl1,"ConfigHL1");
+    vl->add(hl2,"ConfigHL2");
+    for(int i=0;i<4;i++)
+        vl->insertSpace(i*2,0.3f);
+    childWindow->add(vl);
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
     setupConfigClearLightsButton(childWindow,index);
-    for(int i=0;i<4;i++)
-        hl->insertSpace(i*2,0.1f);
+    setupConfigLightHoldButton(childWindow,index);
+    for(int i=0;i<4;i++){
+        hl1->insertSpace(i*2,0.1f);
+        hl2->insertSpace(i*2,0.1f);
+    }
     parent->add(childWindow,"Config");
 }
 
@@ -194,7 +203,13 @@ void Program::setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index){
     tgui::Button::Ptr button = tgui::Button::create();
     button->setText(container->getSound(pageNumber,index)->isLooped()?"looping":"not looping");
     button->onClick(&Program::loopButtonClick,this,index);
-    window->get<tgui::HorizontalLayout>("configHL")->add(button,"LoopButton");
+    window->get<tgui::HorizontalLayout>("ConfigHL1")->add(button,"LoopButton");
+}
+void Program::setupConfigLightHoldButton(tgui::ChildWindow::Ptr window,int index){
+    tgui::Button::Ptr button = tgui::Button::create();
+    button->setText(lightManager->getHold(pageNumber,index)?"Holding":"Not Holding");
+    button->onClick(&Program::lightHoldButtonClick,this,index);
+    window->get<tgui::HorizontalLayout>("ConfigHL1")->add(button,"HoldLightButton");
 }
 
 
@@ -203,7 +218,7 @@ void Program::setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index){
     button->setText("Remove Sound");
     button->getRenderer()->setTextColor(sf::Color::Red);
     button->onClick(&Program::removeButtonClick,this,index);
-    window->get<tgui::HorizontalLayout>("configHL")->add(button,"RemoveButton");
+    window->get<tgui::HorizontalLayout>("ConfigHL2")->add(button,"RemoveButton");
 }
 
 void Program::setupConfigClearLightsButton(tgui::ChildWindow::Ptr window,int index){
@@ -211,7 +226,7 @@ void Program::setupConfigClearLightsButton(tgui::ChildWindow::Ptr window,int ind
     button->setText("Reset Lights");
     button->getRenderer()->setTextColor(sf::Color::Red);
     button->onClick(&Program::resetLightButtonClick,this,index);
-    window->get<tgui::HorizontalLayout>("configHL")->add(button,"ResetButton");
+    window->get<tgui::HorizontalLayout>("ConfigHL2")->add(button,"ResetButton");
 }
 
 void Program::resetLightButtonClick(int index){
@@ -222,6 +237,12 @@ void Program::resetLightButtonClick(int index){
 
 void Program::removeButtonClick(int index){
     container->getSound(pageNumber,index)->clearSample();
+}
+void Program::lightHoldButtonClick(int index){
+    bool holding = lightManager->getHold(pageNumber,index);
+    holding=!holding;
+    lightManager->setHold(pageNumber,index,holding);
+    gui.get<tgui::Button>("HoldLightButton")->setText(holding?"Holding":"Not Holding");
 }
 
 void Program::loopButtonClick(int index){
