@@ -33,6 +33,15 @@ int LightManager::getLight(int pn,int row,int col,int buttonIndex){
     return lights[pn][index][buttonIndex];
 }
 
+void LightManager::setHold(int pn,int row,int col,bool hold){
+    int index = row*8+col;
+    lightHold[pn][index] = hold;
+}
+bool LightManager::getHold(int pn,int row,int col){
+    int index = row*8+col;
+        return lightHold[pn][index];
+}
+
 void LightManager::reset(int pn,int index){
     lights[pn][index].clear();
 }
