@@ -32,7 +32,7 @@ void MIDI::updateLights(std::unordered_map<int,int> & lights,bool down){
         int row = buttonIndex/8;
         int col = buttonIndex%8;
         buttonIndex = row*16+col;
-        message = {144,buttonIndex,down?light.second:12};
+        message = {144,static_cast<unsigned char>(buttonIndex),static_cast<unsigned char>(down?light.second:12)};
         midiout->sendMessage(&message);
     }
 }

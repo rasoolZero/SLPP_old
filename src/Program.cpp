@@ -346,7 +346,7 @@ void Program::statusWindow(){
                 panel->add(lbl);
                 panel->setToolTip(tooltip);
                 panel->getRenderer()->setBackgroundColor(loaded?sf::Color(220,220,220):sf::Color(30,30,30));
-                panel->onClick(AudioContainer::trigger,container.get(),i,j,k,true);
+                panel->onClick(&AudioContainer::trigger,container.get(),i,j,k,true);
                 hl->add(panel);
             }
             for(int k=0;k<=8;k++)

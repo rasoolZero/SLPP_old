@@ -9,7 +9,7 @@ AudioContainer::AudioContainer()
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096)==-1) {
         throw std::runtime_error(std::string("Error on Mix_OpenAudio\n")+std::string(Mix_GetError()));
     }
-    int flags=MIX_INIT_OGG|MIX_INIT_MOD|MIX_INIT_FLAC|MIX_INIT_MP3;
+    int flags=MIX_INIT_OGG|MIX_INIT_MP3;
     int initted=Mix_Init(flags);
     if((initted&flags) != flags) {
         throw std::runtime_error(std::string("Error on Mix_init\n")+std::string(Mix_GetError()));

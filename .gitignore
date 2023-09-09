@@ -9,3 +9,5 @@ form.txt
 todo.txt
 /resources
 *.slpp
+/.vs
+/x64/Debug

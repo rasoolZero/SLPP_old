@@ -32,7 +32,8 @@ void Audio::trigger(bool down){
 }
 
 void Audio::clearSample(){
-    if(loaded){
+    if(loaded && sample){
+        
         Mix_FreeChunk(sample);
         sample=nullptr;
     }

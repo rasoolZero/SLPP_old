@@ -2,6 +2,7 @@
 #include <fstream>
 #include <direct.h>
 #include "Program.h"
+#include <filesystem>
 
 ProjectManager::ProjectManager(Program & _program,tgui::Gui & _gui, AudioContainer & _container, LightManager & _lightManager) :
                                                                 program (_program),gui(_gui),container(_container),lightManager(_lightManager)
@@ -47,7 +48,7 @@ void ProjectManager::saveAsP(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
         return ;
     projectPath = paths[0];
-    chdir(paths[0].getParentPath().asString().toStdString().c_str());
+    std::filesystem::current_path(paths[0].getParentPath());
     saveData();
 }
 
@@ -58,13 +59,14 @@ void ProjectManager::openP(const std::vector<tgui::Filesystem::Path>& paths){
     if(paths[0].getFilename().find(".slpp") == std::string::npos)
         return ;
     projectPath = paths[0];
-    chdir(paths[0].getParentPath().asString().toStdString().c_str());
+    std::filesystem::current_path(paths[0].getParentPath());
     loadData();
 }
 
 void ProjectManager::saveData(){
     program.enable();
-    FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"wb");
+    FILE* file = nullptr;
+    auto result = _wfopen_s(&file, projectPath.asString().toWideString().c_str(), L"wb");
     if(!file){
         program.createErrorBox("Could not open the file");
         return;
@@ -108,7 +110,9 @@ void ProjectManager::saveData(){
 
 void ProjectManager::loadData(){
     program.enable();
-    FILE * file = fopen64(projectPath.asString().toStdString().c_str(),"rb");
+
+    FILE* file = nullptr;
+    auto result = _wfopen_s(&file, projectPath.asString().toWideString().c_str(), L"rb");
     if(!file){
         program.createErrorBox("Could not open the file");
         return;
