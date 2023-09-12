@@ -45,8 +45,8 @@ protected:
 
 
 private:
-    int row;
-    int col;
+    int row=0;
+    int col=0;
     Program & program;
 };
 

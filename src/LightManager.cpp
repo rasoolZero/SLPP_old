@@ -46,5 +46,5 @@ void LightManager::reset(int pn,int index){
 
 int LightManager::getLightCount(int pn,int row,int col){
     int index = row*8+col;
-    return lights[pn][index].size();
+    return static_cast<int>(lights[pn][index].size());
 }

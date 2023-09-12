@@ -43,9 +43,9 @@ void Program::setupLayout(){
         vl->add(hl,"HL"+std::to_string(i));
     }
     for(int i=1;i<=9;i++)
-        vl->insertSpace(i*2,0.2);
-    vl->insertSpace(1,0.4);
-    vl->insertSpace(0,0.2);
+        vl->insertSpace(i*2,0.2f);
+    vl->insertSpace(1,0.4f);
+    vl->insertSpace(0,0.2f);
     vl->setSize("50%","100%");
     vl->setPosition("25%","0%");
     tgui::Panel::Ptr panel = tgui::Panel::create();
@@ -74,7 +74,7 @@ void Program::setupButtons(){
             button->onRightClick(&Program::lightWindow,this,i,j);
             button->setToolTip(tooltip);
             hl->add(button,"mainButton"+std::to_string(i)+std::to_string(j));
-            hl->insertSpace(j*2,0.2);
+            hl->insertSpace(j*2,0.2f);
         }
     }
 
@@ -91,14 +91,14 @@ void Program::setupPageButtons(){
         button->setToolTip(tooltip);
         button->onClick(&Program::setPageNumber,this,i);
         hl->add(button,"PageButton"+std::to_string(i));
-        hl->insertSpace(i*2,0.2);
+        hl->insertSpace(i*2,0.2f);
     }
     tgui::Button::Ptr button = tgui::Button::create();
     button->setText("Stop All\nPlaying\nSounds");
     button->setTextSize(0);
     button->onClick(&AudioContainer::stopAll,container.get());
     hl->add(button);
-    hl->insertSpace(16,0.4);
+    hl->insertSpace(16,0.4f);
 
     for(int i=0;i<8;i++){
         hl = gui.get<tgui::HorizontalLayout>("HL"+std::to_string(i+1));
@@ -107,7 +107,7 @@ void Program::setupPageButtons(){
         button->setToolTip(tooltip);
         button->onClick(&Program::setPageNumber,this,i+8);
         hl->add(button,"PageButton"+std::to_string(i+8));
-        hl->insertSpace(16,0.4);
+        hl->insertSpace(16,0.4f);
     }
 
 }
@@ -350,12 +350,12 @@ void Program::statusWindow(){
                 hl->add(panel);
             }
             for(int k=0;k<=8;k++)
-                hl->insertSpace(k*2,k==4?0.4:0.2);
+                hl->insertSpace(k*2,k==4?0.4f:0.2f);
 
             vl->add(hl);
         }
         for(int j=0;j<=8;j++)
-            vl->insertSpace(j*2,j==4?0.4:0.2);
+            vl->insertSpace(j*2,j==4?0.4f:0.2f);
         vl->setSize("50%","100%");
         vl->setPosition("25%","0%");
 
@@ -363,7 +363,7 @@ void Program::statusWindow(){
         panel->add(vl);
         verticalLayout->add(panel);
     }
-    mainPanel->setVerticalScrollAmount(mainPanel->getContentSize().y/16);
+    mainPanel->setVerticalScrollAmount(static_cast<unsigned int>(mainPanel->getContentSize().y/16.f));
     window->onClose([&]{ this->enable();});
     disable();
     gui.add(window);
@@ -409,12 +409,12 @@ void Program::lightWindow(int row,int col){
             hl->add(panel,"ColorPanel"+std::to_string(j*8+k));
         }
         for(int k=0;k<=8;k++)
-            hl->insertSpace(k*2,k==4?0.4:0.2);
+            hl->insertSpace(k*2,k==4?0.4f:0.2f);
 
         vl->add(hl);
     }
     for(int j=0;j<=8;j++)
-        vl->insertSpace(j*2,j==4?0.4:0.2);
+        vl->insertSpace(j*2,j==4?0.4f:0.2f);
     vl->setSize("50%","100%");
     vl->setPosition("25%","0%");
 
@@ -432,7 +432,7 @@ void Program::lightWindow(int row,int col){
 void Program::lightPanelClick(int row,int col,int index,tgui::Panel::Ptr panel){
     int currentColor = lightManager->getLight(pageNumber,row,col,index);
     sf::Color clr;
-    int newColor;
+    int newColor=0;
     switch (currentColor){
     case 12:
         newColor=15;
