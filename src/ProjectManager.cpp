@@ -87,19 +87,7 @@ void ProjectManager::saveData(){
                     fwrite(sample->abuf,sizeof(Uint8),sample->alen,file);
                 }
             }
-            for(int j=0;j<8;j++)
-                for(int k=0;k<8;k++)
-                    for(int t=0;t<64;t++){
-                        int light = lightManager.getLight(i,j,k,t);
-                        fwrite(&light,sizeof(light),1,file);
-                    }
-            for(int j=0;j<64;j++){
-                bool holding = lightManager.getHold(i,j);
-                fwrite(&holding,sizeof(holding),1,file);
-            }
-
         }
-
     }
     catch(std::exception & e){
         std::string message = std::string("Could not save the data,Error Details:\n")+std::string(e.what());
@@ -122,7 +110,6 @@ void ProjectManager::loadData(){
     try{
         for(int i=0;i<16;i++){
             for(int j=0;j<64;j++){
-                lightManager.reset(i,j);
                 sound = container.getSound(i,j);
                 sound->clearSample();
                 bool loaded;
@@ -140,20 +127,6 @@ void ProjectManager::loadData(){
                     sound->setSample(sample);
                 }
             }
-            for(int j=0;j<8;j++)
-                for(int k=0;k<8;k++)
-                    for(int t=0;t<64;t++){
-                        int light;
-                        fread(&light,sizeof(light),1,file);
-                        if(light==12)
-                            continue;
-                        lightManager.setLight(i,j,k,t,light);
-                    }
-            for(int j=0;j<64;j++){
-                bool holding;
-                fread(&holding,sizeof(holding),1,file);
-                lightManager.setHold(i,j,holding);
-            }
         }
     }
     catch(std::exception & e){
@@ -166,8 +139,7 @@ void ProjectManager::loadData(){
 void ProjectManager::newP(){
     projectPath = tgui::Filesystem::Path();
     for(int i=0;i<16;i++)
-        for(int j=0;j<64;j++){
+        for(int j=0;j<64;j++)
             container.getSound(i,j)->clearSample();
-            lightManager.reset(i,j);
-        }
+        
 }

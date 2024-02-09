@@ -77,7 +77,6 @@ void Program::setupButtons(){
             hl->insertSpace(j*2,0.2f);
         }
     }
-
 }
 void Program::setupPageButtons(){
     auto tooltip = tgui::Label::create();
@@ -130,7 +129,6 @@ void Program::trigger(int row,int col,bool down){
     if(!pollingEvents)
         return ;
     container->trigger(pageNumber,row,col,down);
-    lightManager->trigger(pageNumber,row,col,down);
     gui.get<CButton>("mainButton"+std::to_string(row)+std::to_string(col))->setEnabled(!down);
 }
 
@@ -190,8 +188,6 @@ void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
     childWindow->add(vl);
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
-    setupConfigClearLightsButton(childWindow,index);
-    setupConfigLightHoldButton(childWindow,index);
     for(int i=0;i<4;i++){
         hl1->insertSpace(i*2,0.1f);
         hl2->insertSpace(i*2,0.1f);
@@ -205,12 +201,7 @@ void Program::setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index){
     button->onClick(&Program::loopButtonClick,this,index);
     window->get<tgui::HorizontalLayout>("ConfigHL1")->add(button,"LoopButton");
 }
-void Program::setupConfigLightHoldButton(tgui::ChildWindow::Ptr window,int index){
-    tgui::Button::Ptr button = tgui::Button::create();
-    button->setText(lightManager->getHold(pageNumber,index)?"Holding":"Not Holding");
-    button->onClick(&Program::lightHoldButtonClick,this,index);
-    window->get<tgui::HorizontalLayout>("ConfigHL1")->add(button,"HoldLightButton");
-}
+
 
 
 void Program::setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index){
@@ -221,28 +212,8 @@ void Program::setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index){
     window->get<tgui::HorizontalLayout>("ConfigHL2")->add(button,"RemoveButton");
 }
 
-void Program::setupConfigClearLightsButton(tgui::ChildWindow::Ptr window,int index){
-    tgui::Button::Ptr button = tgui::Button::create();
-    button->setText("Reset Lights");
-    button->getRenderer()->setTextColor(sf::Color::Red);
-    button->onClick(&Program::resetLightButtonClick,this,index);
-    window->get<tgui::HorizontalLayout>("ConfigHL2")->add(button,"ResetButton");
-}
-
-void Program::resetLightButtonClick(int index){
-    lightManager->reset(pageNumber,index);
-    for(int i=0;i<64;i++)
-        gui.get<tgui::Panel>("ColorPanel"+std::to_string(i))->getRenderer()->setBackgroundColor(sf::Color::Black);
-}
-
 void Program::removeButtonClick(int index){
     container->getSound(pageNumber,index)->clearSample();
-}
-void Program::lightHoldButtonClick(int index){
-    bool holding = lightManager->getHold(pageNumber,index);
-    holding=!holding;
-    lightManager->setHold(pageNumber,index,holding);
-    gui.get<tgui::Button>("HoldLightButton")->setText(holding?"Holding":"Not Holding");
 }
 
 void Program::loopButtonClick(int index){
@@ -330,15 +301,11 @@ void Program::statusWindow(){
                 auto panel = tgui::Panel::create();
                 bool loaded = container->getSound(i,j*8+k)->isLoaded();
                 bool looped = container->getSound(i,j*8+k)->isLooped();
-                bool holding = lightManager->getHold(i,j*8+k);
-                int lightCount = lightManager->getLightCount(i,j,k);
-                std::string text = std::to_string(lightCount);
+                std::string text = "";
                 if(looped){
-                    text+="\nLooped";
+                    text+="Looped\n";
                 }
-                if(holding){
-                    text+="\nHolding";
-                }
+
                 auto lbl = tgui::Label::create();
                 lbl->setText(text);
                 lbl->setPosition("(parent.innersize - size) / 2");
@@ -374,87 +341,9 @@ void Program::lightWindow(int row,int col){
     window->setSize(gui.getTarget()->getSize().x,gui.getTarget()->getSize().y);
     window->setPositionLocked();
 
-    auto tooltip = tgui::Label::create();
-    tooltip->setRenderer(tgui::Theme::getDefault()->getRenderer("ToolTip"));
-    tooltip->setText("Click to change the light");
-
-    auto vl = tgui::VerticalLayout::create();
-    for(int j=0;j<8;j++){
-        auto hl = tgui::HorizontalLayout::create();
-
-        for(int k=0;k<8;k++){
-            auto panel = tgui::Panel::create();
-            int color = lightManager->getLight(pageNumber,row,col,j*8+k);
-            sf::Color clr;
-            switch (color){
-            case 12:
-                clr=sf::Color::Black;
-                break;
-            case 15:
-                clr=sf::Color::Red;
-                break;
-            case 63:
-                clr=sf::Color(255, 191, 0);
-                break;
-            case 60:
-                clr=sf::Color::Green;
-                break;
-            case 62:
-                clr=sf::Color::Yellow;
-                break;
-            }
-            panel->setToolTip(tooltip);
-            panel->getRenderer()->setBackgroundColor(clr);
-            panel->onClick(&Program::lightPanelClick,this,row,col,j*8+k,panel);
-            hl->add(panel,"ColorPanel"+std::to_string(j*8+k));
-        }
-        for(int k=0;k<=8;k++)
-            hl->insertSpace(k*2,k==4?0.4f:0.2f);
-
-        vl->add(hl);
-    }
-    for(int j=0;j<=8;j++)
-        vl->insertSpace(j*2,j==4?0.4f:0.2f);
-    vl->setSize("50%","100%");
-    vl->setPosition("25%","0%");
-
-
-    window->add(vl);
-
-
-
     window->onClose([&]{ this->enable();});
     disable();
     gui.add(window);
     createConfigWindow(row*8+col,window);
 }
 
-void Program::lightPanelClick(int row,int col,int index,tgui::Panel::Ptr panel){
-    int currentColor = lightManager->getLight(pageNumber,row,col,index);
-    sf::Color clr;
-    int newColor=0;
-    switch (currentColor){
-    case 12:
-        newColor=15;
-        clr=sf::Color::Red;
-        break;
-    case 15:
-        newColor=63;
-        clr=sf::Color(255, 191, 0);
-        break;
-    case 63:
-        newColor=60;
-        clr=sf::Color::Green;
-        break;
-    case 60:
-        newColor=62;
-        clr=sf::Color::Yellow;
-        break;
-    case 62:
-        newColor=12;
-        clr=sf::Color::Black;
-        break;
-    }
-    panel->getRenderer()->setBackgroundColor(clr);
-    lightManager->setLight(pageNumber,row,col,index,newColor);
-}

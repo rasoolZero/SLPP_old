@@ -9,19 +9,12 @@ class LightManager
 {
     public:
         LightManager(MIDI & _midi);
-        void trigger(int pn,int row,int col,bool down);
-        void setLight(int pn,int row,int col,int buttonIndex,int light);
-        int getLight(int pn,int row,int col,int buttonIndex);
-        void setHold(int pn,int index,bool hold);
-        bool getHold(int pn,int index);
-        void reset(int pn,int index);
-        int getLightCount(int pn,int row,int col);
+
 
     protected:
 
     private:
-        std::vector<std::vector<std::unordered_map<int,int>>> lights;
-        std::vector<std::vector<bool>> lightHold;
+
         MIDI & midi;
 };
 
