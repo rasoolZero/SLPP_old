@@ -11,6 +11,8 @@ class MIDI
         ~MIDI();
         int page(std::vector< unsigned char > *message);
         Program & getProgram(){return program;}
+        void sendCustomMessage(const std::vector<unsigned char>& message);
+
     protected:
 
     private:

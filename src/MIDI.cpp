@@ -26,6 +26,11 @@ int MIDI::page(std::vector< unsigned char > *message){
     return -1;
 }
 
+void MIDI::sendCustomMessage(const std::vector<unsigned char>& message)
+{
+    midiout->sendMessage(&message);
+}
+
 
 void MIDI::resetDevice(){
     std::vector<unsigned char> message={176,0,0};
