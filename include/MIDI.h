@@ -11,7 +11,6 @@ class MIDI
         ~MIDI();
         int page(std::vector< unsigned char > *message);
         Program & getProgram(){return program;}
-        void updateLights(std::unordered_map<int,int> & lights,bool down);
     protected:
 
     private:
