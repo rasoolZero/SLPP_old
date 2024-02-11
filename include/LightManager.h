@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include "MIDI.h"
+#include "LightAnimation.h"
 
 
 class LightManager
