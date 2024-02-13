@@ -178,8 +178,8 @@ void Program::handleEvent(sf::Event event){
 void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
     tgui::ChildWindow::Ptr childWindow = tgui::ChildWindow::create("Config");
     tgui::VerticalLayout::Ptr vl = tgui::VerticalLayout::create();
-    vl->setSize("70%","100%");
-    vl->setPosition("15%","0%");
+    vl->setSize("50%","100%");
+    vl->setPosition("25%","0%");
     tgui::HorizontalLayout::Ptr hl1 = tgui::HorizontalLayout::create();
     tgui::HorizontalLayout::Ptr hl2 = tgui::HorizontalLayout::create();
     vl->add(hl1,"ConfigHL1");
@@ -189,10 +189,6 @@ void Program::createConfigWindow(int index,tgui::ChildWindow::Ptr parent){
     childWindow->add(vl);
     setupConfigLoopButton(childWindow,index);
     setupConfigRemoveButton(childWindow,index);
-    for(int i=0;i<4;i++){
-        hl1->insertSpace(i*2,0.1f);
-        hl2->insertSpace(i*2,0.1f);
-    }
     parent->add(childWindow,"Config");
 }
 
