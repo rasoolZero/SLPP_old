@@ -6,6 +6,7 @@ void CButton::openFile(){
     fileDialog->setFileTypeFilters({{"Audio Files (wav,ogg,flac,mp3)", {"*.wav", "*.ogg","*.flac","*.mp3"}}});
     fileDialog->setFileMustExist(true);
     fileDialog->onFileSelect(&CButton::fileSelect,this);
+    fileDialog->onClose([&] {program.enable(); });
     program.disable();
     this->getParentGui()->add(fileDialog,"fileDialog");
 }
