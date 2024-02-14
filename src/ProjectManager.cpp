@@ -18,6 +18,7 @@ void ProjectManager::saveAs(){
     fileDialog->setFileMustExist(false);
     fileDialog->setMultiSelect(false);
     fileDialog->onFileSelect(&ProjectManager::saveAsP,this);
+    fileDialog->onClose([&] {program.enable(); });
     program.disable();
     gui.add(fileDialog,"saveAsFileDialog");
 }
@@ -28,6 +29,7 @@ void ProjectManager::open(){
     fileDialog->setFileMustExist(true);
     fileDialog->setMultiSelect(false);
     fileDialog->onFileSelect(&ProjectManager::openP,this);
+    fileDialog->onClose([&] {program.enable(); });
     program.disable();
     gui.add(fileDialog,"openFileDialog");
 }
