@@ -11,5 +11,7 @@ tgui::Color light2color(Lights light) {
 		return tgui::Color::Red;
 	if (light == Lights::Amber)
 		return tgui::Color(255, 165, 0);
+	if (light == Lights::Yellow)
+		return tgui::Color::Yellow;
 	return tgui::Color::Black;
 }
