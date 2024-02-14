@@ -8,9 +8,8 @@
 class LightAnimation : public std::vector<LightFrame>
 {
 public:
-
+	LightAnimation();
 	void operator()(MIDI& midi);
-
 
 private:
 	std::function<void(std::reference_wrapper<MIDI>)> func = nullptr;

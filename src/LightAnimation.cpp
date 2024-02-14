@@ -1,5 +1,10 @@
 #include "LightAnimation.h"
 
+LightAnimation::LightAnimation()
+{
+	this->resize(1);
+}
+
 void LightAnimation::operator()(MIDI& midi) {
 	sf::Time totalTime = sf::Time::Zero;
 	for (size_t i = 0; i < this->size(); i++) {
