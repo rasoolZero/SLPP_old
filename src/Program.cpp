@@ -1,4 +1,4 @@
-#include "Program.h"
+﻿#include "Program.h"
 
 Program::Program(tgui::Gui & _gui,sf::RenderWindow * window) : gui(_gui)
 {
@@ -341,6 +341,99 @@ void Program::lightWindow(int row,int col){
     window->onClose([&]{ this->enable();});
     disable();
     gui.add(window);
-    createConfigWindow(row*8+col,window);
+    setupLightAnimationWindow(window, row * 8 + col);
+    createConfigWindow(row * 8 + col, window);
 }
 
+
+void Program::setupLightAnimationWindow(tgui::ChildWindow::Ptr window, int index)
+{
+    auto windowPanel = tgui::Panel::create();
+
+    auto animationPanel = tgui::Panel::create({ "100%","90%" });
+    animationPanel->setAutoLayout(tgui::AutoLayout::Top);
+
+    auto controlPanel = tgui::Panel::create({ "100%","10%" });
+    controlPanel->setAutoLayout(tgui::AutoLayout::Bottom);
+
+    windowPanel->add(animationPanel, "AnimationPanel");
+    windowPanel->add(controlPanel, "ControlPanel");
+    window->add(windowPanel,"WindowLayout");
+
+    setupLightAnimationPanel(animationPanel, index);
+    setupLightAnimationControls(controlPanel, index);
+}
+
+void Program::setupLightAnimationPanel(tgui::Panel::Ptr parent, int index)
+{
+    auto innerPanel = tgui::Panel::create();
+    innerPanel->setSize({ "parent.innerheight" , "100%"});
+    innerPanel->setPosition("(parent.innersize - size) / 2");
+    auto verticalStack = tgui::VerticalLayout::create();
+    for (int i = 0; i < 8; i++) {
+        auto horizontal = tgui::HorizontalLayout::create();
+        for (int j = 0; j < 8; j++) {
+            auto button = tgui::Panel::create();
+            button->getRenderer()->setBackgroundColor(tgui::Color::Black);
+            button->getRenderer()->setBorderColor(tgui::Color::White);
+            button->getRenderer()->setBorders(tgui::Borders(1, 1, 1, 1));
+            horizontal->add(button);
+        }
+        verticalStack->add(horizontal);
+    }
+    innerPanel->add(verticalStack);
+    parent->add(innerPanel);
+}
+
+void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
+{
+    parent->setTextSize(parent->getSize().y / 4);
+
+
+    auto horizontalControlLayout = tgui::HorizontalLayout::create({ "100%" ,"50%" });
+    parent->add(horizontalControlLayout);
+    horizontalControlLayout->setAutoLayout(tgui::AutoLayout::Top);
+
+    auto firstFrame = tgui::Button::create(L"|◁");
+    auto previousFrame = tgui::Button::create(L"◁");
+    auto nextFrame = tgui::Button::create(L"▷");
+    auto lastFrame = tgui::Button::create(L"▷|");
+
+    auto frameInput = tgui::EditBox::create();
+    frameInput->setInputValidator(tgui::EditBox::Validator::UInt);
+    auto frameCounter = tgui::Label::create("/0");
+    frameCounter->setHeight("100%");
+    frameCounter->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
+    frameCounter->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+    
+    horizontalControlLayout->add(firstFrame);
+    horizontalControlLayout->add(previousFrame);
+    horizontalControlLayout->add(frameInput);
+    horizontalControlLayout->add(frameCounter);
+    horizontalControlLayout->add(nextFrame);
+    horizontalControlLayout->add(lastFrame);
+    
+    horizontalControlLayout->insertSpace(0, 14.0f);
+    horizontalControlLayout->addSpace(14.0f);
+
+
+
+    auto horizontalTimeLayout = tgui::HorizontalLayout::create({ "100%" ,"50%" });
+    parent->add(horizontalTimeLayout);
+    horizontalTimeLayout->setAutoLayout(tgui::AutoLayout::Bottom);
+
+    auto timeLabel = tgui::Label::create("Enter frame duration in seconds:");
+    timeLabel->setHeight("100%");
+    timeLabel->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
+    timeLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Left);
+    auto timeInput = tgui::EditBox::create();
+    timeInput->setInputValidator(tgui::EditBox::Validator::Float);
+    horizontalTimeLayout->add(timeLabel);
+    horizontalTimeLayout->add(timeInput);
+
+    horizontalTimeLayout->setRatio(1, .75f);
+    horizontalTimeLayout->setRatio(0, 3.f);
+    horizontalTimeLayout->insertSpace(0, 14.f / 3.f);
+    horizontalTimeLayout->addSpace(14.f / 3.f);
+
+}

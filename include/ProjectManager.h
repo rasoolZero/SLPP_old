@@ -1,6 +1,7 @@
 #ifndef PROJECTMANAGER_H
 #define PROJECTMANAGER_H
 #include <TGUI/TGUI.hpp>
+#include <TGUI/Backend/SFML-Graphics.hpp>
 #include <vector>
 #include "AudioContainer.h"
 #include "LightManager.h"

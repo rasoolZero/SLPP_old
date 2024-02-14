@@ -2,6 +2,7 @@
 #define PROGRAM_H
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
+#include <TGUI/Backend/SFML-Graphics.hpp>
 #include "CButton.h"
 #include "AudioContainer.h"
 #include "ProjectManager.h"
@@ -48,6 +49,10 @@ class Program
         void setupConfigRemoveButton(tgui::ChildWindow::Ptr window,int index);
         void setupConfigLoopButton(tgui::ChildWindow::Ptr window,int index);
         void createConfigWindow(int index,tgui::ChildWindow::Ptr parent);
+
+        void setupLightAnimationWindow(tgui::ChildWindow::Ptr window, int index);
+        void setupLightAnimationPanel(tgui::Panel::Ptr parent, int index);
+        void setupLightAnimationControls(tgui::Panel::Ptr parent, int index);
 
         void removeButtonClick(int index);
         void loopButtonClick(int index);
