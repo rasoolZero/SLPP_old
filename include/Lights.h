@@ -1,4 +1,5 @@
 #pragma once
+#include <TGUI/TGUI.hpp>
 enum class Lights
 {
 	Nothing = 0,
@@ -9,3 +10,4 @@ enum class Lights
 	Off = 12,
 };
 
+tgui::Color light2color(Lights light);

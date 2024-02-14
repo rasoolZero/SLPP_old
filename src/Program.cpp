@@ -374,7 +374,8 @@ void Program::setupLightAnimationPanel(tgui::Panel::Ptr parent, int index)
         auto horizontal = tgui::HorizontalLayout::create();
         for (int j = 0; j < 8; j++) {
             auto button = tgui::Panel::create();
-            button->getRenderer()->setBackgroundColor(tgui::Color::Black);
+            auto backgroundColor = light2color(lightManager->getFrameLight(0, pageNumber, index, i * 8 + j));
+            button->getRenderer()->setBackgroundColor(backgroundColor);
             button->getRenderer()->setBorderColor(tgui::Color::White);
             button->getRenderer()->setBorders(tgui::Borders(1, 1, 1, 1));
             horizontal->add(button);
@@ -401,7 +402,9 @@ void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
 
     auto frameInput = tgui::EditBox::create();
     frameInput->setInputValidator(tgui::EditBox::Validator::UInt);
-    auto frameCounter = tgui::Label::create("/0");
+    frameInput->setText("1");
+    size_t totalFrames = lightManager->getFrameCount(pageNumber, index);
+    auto frameCounter = tgui::Label::create("/"+tgui::String(totalFrames));
     frameCounter->setHeight("100%");
     frameCounter->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
     frameCounter->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
@@ -427,6 +430,8 @@ void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
     timeLabel->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
     timeLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Left);
     auto timeInput = tgui::EditBox::create();
+    float duration = lightManager->getFrameDuratoin(0, pageNumber, index);
+    timeInput->setText(tgui::String(duration));
     timeInput->setInputValidator(tgui::EditBox::Validator::Float);
     horizontalTimeLayout->add(timeLabel);
     horizontalTimeLayout->add(timeInput);

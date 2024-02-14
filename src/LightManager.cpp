@@ -15,32 +15,27 @@ void LightManager::trigger(int pageNumber, int row, int column, bool down)
 		animations[pageNumber][index](this->midi);
 }
 
-Lights LightManager::getFrameLight(int frameIndex, int pageNumber, int row, int column, int lightIndex)
+Lights LightManager::getFrameLight(int frameIndex, int pageNumber, int buttonIndex, int lightIndex)
 {
-	int index = row * 8 + column;
-	return animations[pageNumber][index][frameIndex][lightIndex];
+	return animations[pageNumber][buttonIndex][frameIndex][lightIndex];
 }
 
-void LightManager::setFrameLight(int frameIndex, int pageNumber, int row, int column, int lightIndex, Lights light)
+void LightManager::setFrameLight(int frameIndex, int pageNumber, int buttonIndex, int lightIndex, Lights light)
 {
-	int index = row * 8 + column;
-	animations[pageNumber][index][frameIndex][lightIndex] = light;
+	animations[pageNumber][buttonIndex][frameIndex][lightIndex] = light;
 }
 
-void LightManager::setFrameDuration(int frameIndex, int pageNumber, int row, int column, float duration)
+void LightManager::setFrameDuration(int frameIndex, int pageNumber, int buttonIndex, float duration)
 {
-	int index = row * 8 + column;
-	animations[pageNumber][index][frameIndex].setDuration(sf::seconds(duration));
+	animations[pageNumber][buttonIndex][frameIndex].setDuration(sf::seconds(duration));
 }
 
-float LightManager::getFrameDuratoin(int frameIndex, int pageNumber, int row, int column)
+float LightManager::getFrameDuratoin(int frameIndex, int pageNumber, int buttonIndex)
 {
-	int index = row * 8 + column;
-	return animations[pageNumber][index][frameIndex].getDuration().asSeconds();
+	return animations[pageNumber][buttonIndex][frameIndex].getDuration().asSeconds();
 }
 
-size_t LightManager::getFrameCount(int pageNumber, int row, int column)
+size_t LightManager::getFrameCount(int pageNumber, int buttonIndex)
 {
-	int index = row * 8 + column;
-	return animations[pageNumber][index].size();
+	return animations[pageNumber][buttonIndex].size();
 }

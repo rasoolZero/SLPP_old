@@ -11,11 +11,11 @@ class LightManager
     public:
         LightManager(MIDI & _midi);
         void trigger(int pageNumber, int row, int column, bool down);
-        Lights getFrameLight(int frameIndex, int pageNumber, int row, int column, int lightIndex);
-        void setFrameLight(int frameIndex, int pageNumber, int row, int column, int lightIndex, Lights light);
-        void setFrameDuration(int frameIndex, int pageNumber, int row, int column, float duration);
-        float getFrameDuratoin(int frameIndex, int pageNumber, int row, int column);
-        size_t getFrameCount(int pageNumber, int row, int column);
+        Lights getFrameLight(int frameIndex, int pageNumber, int buttonIndex, int lightIndex);
+        void setFrameLight(int frameIndex, int pageNumber, int buttonIndex, int lightIndex, Lights light);
+        void setFrameDuration(int frameIndex, int pageNumber, int buttonIndex, float duration);
+        float getFrameDuratoin(int frameIndex, int pageNumber, int buttonIndex);
+        size_t getFrameCount(int pageNumber, int buttonIndex);
 
     protected:
 
