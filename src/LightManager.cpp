@@ -39,3 +39,9 @@ size_t LightManager::getFrameCount(int pageNumber, int buttonIndex)
 {
 	return animations[pageNumber][buttonIndex].size();
 }
+
+int LightManager::newFrame(int pageNumber, int buttonIndex)
+{
+	animations[pageNumber][buttonIndex].push_back(LightFrame());
+	return getFrameCount(pageNumber, buttonIndex);
+}

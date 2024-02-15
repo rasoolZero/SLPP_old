@@ -16,6 +16,7 @@ class LightManager
         void setFrameDuration(int frameIndex, int pageNumber, int buttonIndex, float duration);
         float getFrameDuratoin(int frameIndex, int pageNumber, int buttonIndex);
         size_t getFrameCount(int pageNumber, int buttonIndex);
+        int newFrame(int pageNumber, int buttonIndex);
 
     protected:
 

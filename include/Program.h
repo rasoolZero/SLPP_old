@@ -54,8 +54,14 @@ class Program
         void setupLightAnimationPanel(tgui::Panel::Ptr parent, int index);
         void setupLightAnimationControls(tgui::Panel::Ptr parent, int index);
 
+        void nextFrame(int buttonIndex);
+        void previousFrame(int buttonIndex);
+        void lastFrame(int buttonIndex);
+        void firstFrame(int buttonIndex);
+
         void removeButtonClick(int index);
         void loopButtonClick(int index);
+
 
         bool pollingEvents=false;
 
