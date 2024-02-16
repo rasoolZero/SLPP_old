@@ -408,6 +408,7 @@ void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
     auto frameInput = tgui::EditBox::create();
     frameInput->setInputValidator(tgui::EditBox::Validator::UInt);
     frameInput->setText("1");
+    frameInput->onReturnOrUnfocus(&Program::frameIndexChanged, this, frameInput, index);
     size_t totalFrames = lightManager->getFrameCount(pageNumber, index);
     auto frameCounter = tgui::Label::create("/"+tgui::String(totalFrames));
     frameCounter->setHeight("100%");
@@ -435,6 +436,7 @@ void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
     timeLabel->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
     timeLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Left);
     auto timeInput = tgui::EditBox::create();
+    timeInput->onReturnOrUnfocus(&Program::frameDurationChanged, this, timeInput, index);
     float duration = lightManager->getFrameDuratoin(0, pageNumber, index);
     timeInput->setText(tgui::String(duration));
     timeInput->setInputValidator(tgui::EditBox::Validator::Float);
@@ -511,4 +513,30 @@ void Program::firstFrame(int buttonIndex)
     timeInput->setText(tgui::String(currentDuration));
     frameInput->setText(tgui::String(currentFrame));
     updateLightButtons(currentFrame, buttonIndex);
+}
+
+void Program::frameDurationChanged(const tgui::EditBox::Ptr& durationInput, int buttonIndex)
+{
+    auto frameInput = gui.get<tgui::EditBox>("frameInput");
+    int currentFrame = frameInput->getText().toInt();
+    auto newFrameDuration = durationInput->getText();
+    float frameDuration;
+    if (!newFrameDuration.attemptToFloat(frameDuration))
+        return;
+    lightManager->setFrameDuration(currentFrame - 1, pageNumber, buttonIndex, frameDuration);
+}
+
+void Program::frameIndexChanged(const tgui::EditBox::Ptr& frameInput, int buttonIndex)
+{
+    auto timeInput = gui.get<tgui::EditBox>("timeInput");
+    auto newFrameIndex = frameInput->getText();
+    Uint32 frameIndex;
+    if (!newFrameIndex.attemptToUInt(frameIndex))
+        return;
+    if (frameIndex <= 0 || frameIndex > lightManager->getFrameCount(pageNumber, buttonIndex))
+        return;
+
+    float currentDuration = lightManager->getFrameDuratoin(frameIndex - 1, pageNumber, buttonIndex);
+    timeInput->setText(tgui::String(currentDuration));
+    updateLightButtons(frameIndex, buttonIndex);
 }

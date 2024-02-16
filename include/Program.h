@@ -61,6 +61,9 @@ class Program
         void lastFrame(int buttonIndex);
         void firstFrame(int buttonIndex);
 
+        void frameDurationChanged(const tgui::EditBox::Ptr& durationInput, int buttonIndex);
+        void frameIndexChanged(const tgui::EditBox::Ptr& indexInput, int buttonIndex);
+
         void removeButtonClick(int index);
         void loopButtonClick(int index);
 
