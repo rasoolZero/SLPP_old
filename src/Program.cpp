@@ -398,8 +398,12 @@ void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
     auto firstFrame = tgui::Button::create(L"|◁");
     auto previousFrame = tgui::Button::create(L"◁");
     auto nextFrame = tgui::Button::create(L"▷");
-    nextFrame->onClick(&Program::nextFrame, this, index);
     auto lastFrame = tgui::Button::create(L"▷|");
+
+    nextFrame->onClick(&Program::nextFrame, this, index);
+    previousFrame->onClick(&Program::previousFrame, this, index);
+    firstFrame->onClick(&Program::firstFrame, this, index);
+    lastFrame->onClick(&Program::lastFrame, this, index);
 
     auto frameInput = tgui::EditBox::create();
     frameInput->setInputValidator(tgui::EditBox::Validator::UInt);
@@ -444,6 +448,17 @@ void Program::setupLightAnimationControls(tgui::Panel::Ptr parent, int index)
 
 }
 
+void Program::updateLightButtons(int currentFrame, int buttonIndex)
+{
+    for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++) {
+            int index = i * 8 + j;
+            auto lightButton = gui.get<tgui::Panel>("Light" + tgui::String(index));
+            auto currentColor = light2color(lightManager->getFrameLight(currentFrame - 1, pageNumber, buttonIndex, index));
+            lightButton->getRenderer()->setBackgroundColor(currentColor);
+        }
+}
+
 void Program::nextFrame(int buttonIndex)
 {
     auto frameInput = gui.get<tgui::EditBox>("frameInput");
@@ -459,23 +474,41 @@ void Program::nextFrame(int buttonIndex)
     timeInput->setText(tgui::String(currentDuration));
     frameInput->setText(tgui::String(currentFrame));
     frameCounter->setText("/"+tgui::String(lastFrame));
-    for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++) {
-            int index = i * 8 + j;
-            auto lightButton = gui.get<tgui::Panel>("Light" + tgui::String(index));
-            auto currentColor = light2color(lightManager->getFrameLight(currentFrame - 1, pageNumber, buttonIndex, index));
-            lightButton->getRenderer()->setBackgroundColor(currentColor);
-        }
+    updateLightButtons(currentFrame, buttonIndex);
 }
 
 void Program::previousFrame(int buttonIndex)
 {
+    auto frameInput = gui.get<tgui::EditBox>("frameInput");
+    auto timeInput = gui.get<tgui::EditBox>("timeInput");
+    int currentFrame = frameInput->getText().toInt();
+    if (currentFrame == 1)
+        return;
+    currentFrame--;
+    float currentDuration = lightManager->getFrameDuratoin(currentFrame - 1, pageNumber, buttonIndex);
+    timeInput->setText(tgui::String(currentDuration));
+    frameInput->setText(tgui::String(currentFrame));
+    updateLightButtons(currentFrame, buttonIndex);
 }
 
 void Program::lastFrame(int buttonIndex)
 {
+    auto frameInput = gui.get<tgui::EditBox>("frameInput");
+    auto timeInput = gui.get<tgui::EditBox>("timeInput");
+    int currentFrame = lightManager->getFrameCount(pageNumber, buttonIndex);
+    float currentDuration = lightManager->getFrameDuratoin(currentFrame - 1, pageNumber, buttonIndex);
+    timeInput->setText(tgui::String(currentDuration));
+    frameInput->setText(tgui::String(currentFrame));
+    updateLightButtons(currentFrame, buttonIndex);
 }
 
 void Program::firstFrame(int buttonIndex)
 {
+    auto frameInput = gui.get<tgui::EditBox>("frameInput");
+    auto timeInput = gui.get<tgui::EditBox>("timeInput");
+    int currentFrame = 1;
+    float currentDuration = lightManager->getFrameDuratoin(currentFrame - 1, pageNumber, buttonIndex);
+    timeInput->setText(tgui::String(currentDuration));
+    frameInput->setText(tgui::String(currentFrame));
+    updateLightButtons(currentFrame, buttonIndex);
 }

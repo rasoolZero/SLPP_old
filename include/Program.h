@@ -54,6 +54,8 @@ class Program
         void setupLightAnimationPanel(tgui::Panel::Ptr parent, int index);
         void setupLightAnimationControls(tgui::Panel::Ptr parent, int index);
 
+        void updateLightButtons(int currentFrame, int buttonIndex);
+
         void nextFrame(int buttonIndex);
         void previousFrame(int buttonIndex);
         void lastFrame(int buttonIndex);
