@@ -11,3 +11,4 @@ enum class Lights
 };
 
 tgui::Color light2color(Lights light);
+Lights cycleLight(Lights light);

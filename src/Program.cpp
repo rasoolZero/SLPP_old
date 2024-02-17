@@ -374,6 +374,7 @@ void Program::setupLightAnimationPanel(tgui::Panel::Ptr parent, int index)
         auto horizontal = tgui::HorizontalLayout::create();
         for (int j = 0; j < 8; j++) {
             auto button = tgui::Panel::create();
+            button->onClick(&Program::cycleLightButton, this, button, index, i * 8 + j);
             auto backgroundColor = light2color(lightManager->getFrameLight(0, pageNumber, index, i * 8 + j));
             button->getRenderer()->setBackgroundColor(backgroundColor);
             button->getRenderer()->setBorderColor(tgui::Color::White);
@@ -459,6 +460,18 @@ void Program::updateLightButtons(int currentFrame, int buttonIndex)
             auto currentColor = light2color(lightManager->getFrameLight(currentFrame - 1, pageNumber, buttonIndex, index));
             lightButton->getRenderer()->setBackgroundColor(currentColor);
         }
+}
+
+void Program::cycleLightButton(tgui::Panel::Ptr currentLightButton, int buttonIndex, int lightIndex)
+{
+    auto frameInput = gui.get<tgui::EditBox>("frameInput");
+    Uint32 currentFrame;
+    if (!frameInput->getText().attemptToUInt(currentFrame))
+        return;
+    auto currentLight = lightManager->getFrameLight(currentFrame - 1, pageNumber, buttonIndex, lightIndex);
+    auto nextLight = cycleLight(currentLight);
+    currentLightButton->getRenderer()->setBackgroundColor(light2color(nextLight));
+    lightManager->setFrameLight(currentFrame - 1, pageNumber, buttonIndex, lightIndex, nextLight);
 }
 
 void Program::nextFrame(int buttonIndex)

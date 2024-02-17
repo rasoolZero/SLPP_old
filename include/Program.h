@@ -56,6 +56,8 @@ class Program
 
         void updateLightButtons(int currentFrame, int buttonIndex);
 
+        void cycleLightButton(tgui::Panel::Ptr currentLightButton, int buttonIndex, int lightIndex);
+
         void nextFrame(int buttonIndex);
         void previousFrame(int buttonIndex);
         void lastFrame(int buttonIndex);

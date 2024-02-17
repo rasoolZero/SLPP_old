@@ -15,3 +15,18 @@ tgui::Color light2color(Lights light) {
 		return tgui::Color::Yellow;
 	return tgui::Color::Black;
 }
+
+Lights cycleLight(Lights light)
+{
+    if (light == Lights::Nothing)
+        return Lights::Red;
+    if (light == Lights::Red)
+        return Lights::Amber;
+    if (light == Lights::Amber)
+        return Lights::Yellow;
+    if (light == Lights::Yellow)
+        return Lights::Green;
+    if (light == Lights::Green)
+        return Lights::Off;
+    return Lights();
+}
