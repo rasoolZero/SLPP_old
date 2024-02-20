@@ -1,7 +1,7 @@
 #include "MIDI.h"
 #include "Program.h"
 
-MIDI::MIDI(Program & _program) : program(_program), lockRapidMode(1)
+MIDI::MIDI(Program & _program) : program(_program)
 {
     midiin = std::make_unique<RtMidiIn>();
     midiout = std::make_unique<RtMidiOut>();
@@ -30,16 +30,6 @@ int MIDI::page(std::vector< unsigned char > *message){
 void MIDI::sendCustomMessage(const std::vector<unsigned char>& message)
 {
     midiout->sendMessage(&message);
-}
-
-void MIDI::acquireRapidMode()
-{
-    lockRapidMode.acquire();
-}
-
-void MIDI::releaseRapidMode()
-{
-    lockRapidMode.release();
 }
 
 

@@ -1,13 +1,14 @@
 #include "LightState.h"
 
 
-LightState::LightState(MIDI& _midi) : midi(_midi)
+LightState::LightState(MIDI& _midi) : midi(_midi), lock(1)
 {
 }
 
 
 void LightState::update(const std::vector<Lights>* newFrame)
 {
+	lock.acquire();
 	for (int i = 0; i < 64; i++) {
 		if (newFrame->operator[](i) == Lights::Nothing)
 			continue;
@@ -18,7 +19,6 @@ void LightState::update(const std::vector<Lights>* newFrame)
 
 void LightState::animateMidi()
 {
-	midi.acquireRapidMode();
 	for (int i = 0; i < 64; i++) {
 		v = { 146,static_cast<unsigned char>(this->operator[](i)), static_cast<unsigned char>(this->operator[](i + 1)) };
 		i++;
@@ -26,5 +26,5 @@ void LightState::animateMidi()
 	}
 	v = { 128 ,120,0 };
 	midi.sendCustomMessage(v);
-	midi.releaseRapidMode();
+	lock.release();
 }

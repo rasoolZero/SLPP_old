@@ -3,7 +3,6 @@
 #include <RtMidi.h>
 #include <memory>
 #include <unordered_map>
-#include <semaphore>
 class Program;
 class MIDI
 {
@@ -14,13 +13,10 @@ class MIDI
         Program & getProgram(){return program;}
         void sendCustomMessage(const std::vector<unsigned char>& message);
 
-        void acquireRapidMode();
-        void releaseRapidMode();
 
     protected:
 
     private:
-        std::binary_semaphore lockRapidMode;
         std::unique_ptr<RtMidiIn> midiin;
         std::unique_ptr<RtMidiOut> midiout;
         Program & program;

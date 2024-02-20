@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <vector>
+#include <semaphore>
 #include "Lights.h"
 #include "MIDI.h"
 class LightState :  public std::array<Lights,64>
@@ -12,6 +13,7 @@ public:
 protected:
 
 private:
+	std::binary_semaphore lock;
 	void animateMidi();
 	MIDI& midi;
 	std::vector<unsigned char> v = { 0,0,0 };
