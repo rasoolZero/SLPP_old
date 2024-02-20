@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "MIDI.h"
 #include "LightAnimation.h"
+#include "LightState.h"
 
 
 class LightManager
@@ -21,6 +22,7 @@ class LightManager
     protected:
 
     private:
+        LightState currentLightState;
         std::vector<std::vector<LightAnimation>> animations;
         MIDI & midi;
 };

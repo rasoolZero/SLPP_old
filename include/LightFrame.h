@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Lights.h"
-#include "MIDI.h"
+#include "LightState.h"
 #include <SFML/Graphics.hpp>
 class LightFrame : public std::vector<Lights>
 {
@@ -16,10 +16,9 @@ public:
 		return this->duration;
 	}
 
-	void animateMidi(MIDI& midi);
+	void animateLaunchpad(LightState& launchpadState);
 
 private:
 	sf::Time duration;
-	std::vector<unsigned char> v = { 0,0,0 };
 };
 

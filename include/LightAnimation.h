@@ -4,15 +4,15 @@
 #include <future>
 #include <functional>
 #include <chrono>
-#include "MIDI.h"
+#include "LightState.h"
 class LightAnimation : public std::vector<LightFrame>
 {
 public:
 	LightAnimation();
-	void operator()(MIDI& midi);
+	void operator()(LightState& launchpadLights);
 
 private:
-	std::function<void(std::reference_wrapper<MIDI>)> func = nullptr;
+	std::function<void(std::reference_wrapper<LightState>)> func = nullptr;
 
 	template <typename... ParamTypes>
 	void setTimeOut(int32_t milliseconds, std::function<void(ParamTypes...)> func, ParamTypes... parames);

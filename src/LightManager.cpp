@@ -1,6 +1,6 @@
 #include "LightManager.h"
 
-LightManager::LightManager(MIDI & _midi) : midi(_midi)
+LightManager::LightManager(MIDI & _midi) : midi(_midi), currentLightState(_midi)
 {
 	animations.resize(16);
 	for (auto& page : animations) 
@@ -12,7 +12,7 @@ void LightManager::trigger(int pageNumber, int row, int column, bool down)
 {
 	auto index = row * 8 + column;
 	if (down)
-		animations[pageNumber][index](this->midi);
+		animations[pageNumber][index](this->currentLightState);
 }
 
 Lights LightManager::getFrameLight(int frameIndex, int pageNumber, int buttonIndex, int lightIndex)
