@@ -127,6 +127,7 @@ void ProjectManager::loadData(){
     Audio * sound;
     Mix_Chunk * sample;
     try{
+        // loading audio
         for(int i=0;i<16;i++){
             for(int j=0;j<64;j++){
                 sound = container.getSound(i,j);
@@ -144,6 +145,27 @@ void ProjectManager::loadData(){
                     fread(sample->abuf,sizeof(Uint8),sample->alen,file);
                     sound->setLooping(looped);
                     sound->setSample(sample);
+                }
+            }
+        }
+        // loading lightshow
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 64; j++) {
+                size_t frameCount=0;
+                fread(&frameCount, sizeof(frameCount), 1, file);
+                for (int t = 0; t < frameCount - 1; t++)
+                    lightManager.newFrame(i, j);
+
+                for (int frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                    float frameDuration;
+                    fread(&frameDuration, sizeof(frameDuration), 1, file);
+                    lightManager.setFrameDuration(frameIndex, i, j, frameDuration);
+
+                    for (int lightIndex = 0; lightIndex < 64; lightIndex++) {
+                        Lights light;
+                        fread(&light, sizeof(light), 1, file);
+                        lightManager.setFrameLight(frameIndex, i, j, lightIndex, light);
+                    }
                 }
             }
         }
