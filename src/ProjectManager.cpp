@@ -76,6 +76,7 @@ void ProjectManager::saveData(){
     Audio * sound;
     Mix_Chunk * sample;
     try{
+        // saving audio
         for(int i=0;i<16;i++){
             for(int j=0;j<64;j++){
                 sound = container.getSound(i,j);
@@ -90,6 +91,22 @@ void ProjectManager::saveData(){
                 }
             }
         }
+        // saving lightshow
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 64; j++) {
+                auto frameCount = lightManager.getFrameCount(i, j);
+                fwrite(&frameCount, sizeof(frameCount), 1, file);
+                for (int frameIndex = 0; frameIndex < frameCount; frameIndex++) {
+                    auto frameDuration = lightManager.getFrameDuratoin(frameIndex, i, j);
+                    fwrite(&frameDuration, sizeof(frameDuration), 1, file);
+                    for (int lightIndex = 0; lightIndex < 64; lightIndex++) {
+                        auto light = lightManager.getFrameLight(frameIndex, i, j, lightIndex);
+                        fwrite(&light, sizeof(light), 1, file);
+                    }
+                }
+            }
+        }
+
     }
     catch(std::exception & e){
         std::string message = std::string("Could not save the data,Error Details:\n")+std::string(e.what());
